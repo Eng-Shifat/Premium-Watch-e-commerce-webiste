@@ -25,18 +25,18 @@ const about = [
 export function Footer() {
   return (
     <footer className="bg-navy text-paper">
-      <div className="site-wrap flex flex-col items-center pt-12 pb-6">
-        <Logo invert className="mb-10" />
+      <div className="site-wrap flex flex-col items-center pt-10 pb-6 md:pt-12">
+        <Logo invert className="mb-8 md:mb-10" />
 
-        {/* Mobile: 2 col, md: 5 col */}
-        <div className="grid w-full grid-cols-2 gap-8 sm:gap-10 md:grid-cols-5">
+        {/* Mobile: 2 col, sm: 3 col, md: 5 col */}
+        <div className="grid w-full grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 sm:gap-10 md:grid-cols-5">
           <Col title="SHOP">
             {shop.map((l) => (
               <Link
                 key={l.label}
                 to={l.to}
                 search={l.search}
-                className="block py-1 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper"
+                className="block py-1.5 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper md:py-1"
               >
                 {l.label}
               </Link>
@@ -47,7 +47,7 @@ export function Footer() {
               <Link
                 key={l.to}
                 to={l.to}
-                className="block py-1 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper"
+                className="block py-1.5 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper md:py-1"
               >
                 {l.label}
               </Link>
@@ -58,17 +58,17 @@ export function Footer() {
               <Link
                 key={l.to}
                 to={l.to}
-                className="block py-1 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper"
+                className="block py-1.5 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper md:py-1"
               >
                 {l.label}
               </Link>
             ))}
           </Col>
           <div>
-            <p className="mb-4 text-[13px] font-medium tracking-wide">Contact</p>
+            <p className="mb-3 text-[13px] font-medium tracking-wide md:mb-4">Contact</p>
             <p className="text-[13px] text-cloud/90">
               Email :{" "}
-              <a href="mailto:urbantick@gmail.com" className="hover:text-paper break-all">
+              <a href="mailto:urbantick@gmail.com" className="break-words hover:text-paper">
                 urbantick@gmail.com
               </a>
             </p>
@@ -79,16 +79,16 @@ export function Footer() {
               </a>
             </p>
           </div>
-          <div>
-            <p className="mb-4 text-[13px] font-medium tracking-wide">Connect with us</p>
-            <div className="flex items-center gap-4">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="text-paper transition-opacity duration-150 hover:opacity-70">
+          <div className="col-span-2 flex flex-col items-center border-t border-paper/10 pt-6 sm:col-span-1 sm:items-start sm:border-t-0 sm:pt-0">
+            <p className="mb-3 text-[13px] font-medium tracking-wide md:mb-4">Connect with us</p>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="flex size-11 items-center justify-center text-paper transition-opacity duration-150 hover:opacity-70">
                 <Instagram className="size-4" />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="text-paper transition-opacity duration-150 hover:opacity-70">
+              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="flex size-11 items-center justify-center text-paper transition-opacity duration-150 hover:opacity-70">
                 <Facebook className="size-4" />
               </a>
-              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X" className="text-paper transition-opacity duration-150 hover:opacity-70">
+              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X" className="flex size-11 items-center justify-center text-paper transition-opacity duration-150 hover:opacity-70">
                 <XMark />
               </a>
             </div>
@@ -96,7 +96,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-paper/10">
-        <p className="site-wrap py-4 text-[11px] text-cloud/70 text-center md:text-left">
+        <p className="site-wrap py-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-[11px] text-cloud/70 text-center md:text-left">
           © 2024 UrbanTick. All Rights Reserved.
         </p>
       </div>
@@ -107,7 +107,7 @@ export function Footer() {
 function Col({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
-      <p className="mb-4 text-[13px] font-medium tracking-wide">{title}</p>
+      <p className="mb-3 text-[13px] font-medium tracking-wide md:mb-4">{title}</p>
       {children}
     </div>
   );

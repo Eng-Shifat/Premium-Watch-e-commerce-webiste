@@ -11,8 +11,8 @@ export function Hero() {
         fetchPriority="high"
         className="absolute inset-0 w-full h-full object-cover object-[62%_center] sm:object-center"
       />
-      {/* light overlay on mobile so text stays readable */}
-      <div className="absolute inset-0 bg-hero/60 sm:bg-transparent" />
+      {/* mobile: soft fade only behind the text (left), watch on the right stays crisp */}
+      <div className="absolute inset-0 bg-linear-to-r from-hero/90 from-25% via-hero/45 via-50% to-transparent to-70% sm:hidden" />
 
       <div className="relative z-10 flex items-center min-h-[380px] sm:min-h-[460px] md:min-h-[560px]">
         <div className="site-wrap w-full">
@@ -25,7 +25,7 @@ export function Hero() {
               Everyone<br />
               Desires!
             </h1>
-            <p className="mt-4 text-[12px] sm:text-[13px] leading-relaxed text-ash max-w-[260px] sm:max-w-[300px]">
+            <p className="mt-4 text-[12px] sm:text-[13px] leading-relaxed text-ash max-w-[190px] min-[420px]:max-w-[240px] sm:max-w-[300px]">
               The best in class elegant watches from the luxury brand Swiss Eagle
               high-quality watches into which a lot of care has gone in.
             </p>
