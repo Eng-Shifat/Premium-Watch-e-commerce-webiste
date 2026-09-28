@@ -490,52 +490,55 @@ function PaymentPage() {
       <Dialog.Root open={!!placed}>
         <Dialog.Portal>
           <Dialog.Overlay className="ut-overlay fixed inset-0 z-50 bg-black/55 backdrop-blur-[3px]" />
+          {/* Centering lives on this wrapper; the card animates on its own so the two transforms never fight */}
           <Dialog.Content
             onEscapeKeyDown={(e) => e.preventDefault()}
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
             aria-describedby="order-success-desc"
-            className="ut-pop fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-[640px] -translate-x-1/2 -translate-y-1/2 rounded-[28px] border-[3px] border-black bg-white px-6 py-10 shadow-[0_30px_80px_rgba(0,0,0,0.35)] outline-none sm:px-12 sm:py-14"
+            className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4 outline-none"
           >
-            <Dialog.Title className="text-center text-[24px] font-light uppercase leading-tight tracking-[0.02em] text-black sm:text-[34px]">
-              Thank you for your order!
-            </Dialog.Title>
+            <div className="ut-pop pointer-events-auto w-full max-w-[640px] rounded-[28px] border-[3px] border-black bg-white px-6 py-10 shadow-[0_30px_80px_rgba(0,0,0,0.35)] sm:px-12 sm:py-14">
+              <Dialog.Title className="text-center text-[24px] font-light uppercase leading-tight tracking-[0.02em] text-black sm:text-[34px]">
+                Thank you for your order!
+              </Dialog.Title>
 
-            <div className="mx-auto mt-8 w-fit max-w-full space-y-4 sm:mt-10">
-              <div className="flex items-center gap-3.5">
-                <span className="ut-check flex size-11 shrink-0 items-center justify-center rounded-full bg-[#16a34a] text-white shadow-[0_8px_20px_rgba(22,163,74,0.35)]">
-                  <Check className="size-6" strokeWidth={3} />
-                </span>
-                <p className="text-[16px] font-semibold tracking-wide text-black sm:text-[18px]">
-                  {placed?.method === "cod" ? "Order confirmed" : "Payment done successful"}
-                </p>
+              <div className="mx-auto mt-8 w-fit max-w-full space-y-4 sm:mt-10">
+                <div className="flex items-center gap-3.5">
+                  <span className="ut-check flex size-11 shrink-0 items-center justify-center rounded-full bg-[#16a34a] text-white shadow-[0_8px_20px_rgba(22,163,74,0.35)]">
+                    <Check className="size-6" strokeWidth={3} />
+                  </span>
+                  <p className="text-[16px] font-semibold tracking-wide text-black sm:text-[18px]">
+                    {placed?.method === "cod" ? "Order confirmed" : "Payment done successful"}
+                  </p>
+                </div>
+
+                <div className="space-y-4 sm:pl-[58px]">
+                  <p id="order-success-desc" className="text-[15px] text-black sm:text-[17px]">
+                    Your order has been successfully placed.
+                  </p>
+                  <p className="text-[17px] text-[#7f1010] sm:text-[20px]">
+                    Order Number: <span className="tabular-nums">#{placed?.orderId}</span>
+                  </p>
+                </div>
               </div>
 
-              <div className="space-y-4 sm:pl-[58px]">
-                <p id="order-success-desc" className="text-[15px] text-black sm:text-[17px]">
-                  Your order has been successfully placed.
-                </p>
-                <p className="text-[17px] text-[#7f1010] sm:text-[20px]">
-                  Order Number: <span className="tabular-nums">#{placed?.orderId}</span>
-                </p>
+              <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:mt-14 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={() => void navigate({ to: "/account" })}
+                  className="rounded-full border border-black/30 bg-black px-8 py-3.5 text-[14px] font-medium text-white transition-all hover:opacity-85 active:scale-95 sm:min-w-[180px]"
+                >
+                  My orders
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void navigate({ to: "/shop" })}
+                  className="rounded-full border border-black/30 bg-black px-8 py-3.5 text-[14px] font-medium text-white transition-all hover:opacity-85 active:scale-95"
+                >
+                  Continue shopping
+                </button>
               </div>
-            </div>
-
-            <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:mt-14 sm:flex-row">
-              <button
-                type="button"
-                onClick={() => void navigate({ to: "/account" })}
-                className="rounded-full border border-black/30 bg-black px-8 py-3.5 text-[14px] font-medium text-white transition-all hover:opacity-85 active:scale-95 sm:min-w-[180px]"
-              >
-                My orders
-              </button>
-              <button
-                type="button"
-                onClick={() => void navigate({ to: "/shop" })}
-                className="rounded-full border border-black/30 bg-black px-8 py-3.5 text-[14px] font-medium text-white transition-all hover:opacity-85 active:scale-95"
-              >
-                Continue shopping
-              </button>
             </div>
           </Dialog.Content>
         </Dialog.Portal>
@@ -544,17 +547,18 @@ function PaymentPage() {
       <style>{`
         @keyframes ut-fade { from { opacity: 0 } to { opacity: 1 } }
         @keyframes ut-pop {
-          from { opacity: 0; transform: translate(-50%, -46%) scale(.94) }
-          to   { opacity: 1; transform: translate(-50%, -50%) scale(1) }
+          0%   { opacity: 0; transform: translate3d(0, 110px, 0) scale(.82) }
+          55%  { opacity: 1 }
+          100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) }
         }
         @keyframes ut-check {
           0%   { transform: scale(.4); opacity: 0 }
           60%  { transform: scale(1.15); opacity: 1 }
           100% { transform: scale(1) }
         }
-        .ut-overlay { animation: ut-fade .25s ease-out both }
-        .ut-pop     { animation: ut-pop .35s cubic-bezier(.2,.9,.3,1.2) both }
-        .ut-check   { animation: ut-check .5s .25s cubic-bezier(.2,.9,.3,1.3) both }
+        .ut-overlay { animation: ut-fade .45s ease-out both }
+        .ut-pop     { transform-origin: 50% 100%; will-change: transform, opacity; animation: ut-pop .7s cubic-bezier(.22,1.15,.36,1) both }
+        .ut-check   { animation: ut-check .5s .45s cubic-bezier(.2,.9,.3,1.3) both }
       `}</style>
     </main>
   );
