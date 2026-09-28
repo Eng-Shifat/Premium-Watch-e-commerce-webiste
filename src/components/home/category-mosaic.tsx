@@ -37,13 +37,13 @@ export function CategoryMosaic() {
               <Link
                 to="/shop"
                 className={cn(
-                  "group relative block h-full min-h-[160px] overflow-hidden rounded-xl sm:min-h-[200px] lg:min-h-0",
+                  "group relative block h-full min-h-[200px] overflow-hidden rounded-xl sm:min-h-[240px] lg:min-h-0",
                 )}
               >
                 <img
                   src={cat.image}
                   alt={cat.name}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                  className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                   loading="lazy"
                   decoding="async"
                 />

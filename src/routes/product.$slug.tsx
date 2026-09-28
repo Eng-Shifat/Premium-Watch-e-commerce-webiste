@@ -184,17 +184,22 @@ function ProductPage() {
             {meta.colors.length > 0 && (
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <span className="text-[14px] font-medium text-ink">Select Color</span>
-                <div className="relative">
-                  <select
-                    value={selectedColor}
-                    onChange={(e) => setSelectedColor(e.target.value)}
-                    className="h-9 appearance-none rounded-full border border-ink bg-ink pl-4 pr-8 text-[13px] font-medium text-paper outline-none cursor-pointer"
-                  >
-                    {meta.colors.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 size-3.5 -translate-y-1/2 text-paper" />
+                <div className="flex gap-2">
+                  {meta.colors.map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      onClick={() => setSelectedColor(c)}
+                      className={cn(
+                        "h-8 rounded-full px-4 text-[12px] font-medium transition-all duration-150 border",
+                        selectedColor === c
+                          ? "bg-ink text-paper border-ink"
+                          : "bg-paper text-ink border-line hover:border-ink/50"
+                      )}
+                    >
+                      {c}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
