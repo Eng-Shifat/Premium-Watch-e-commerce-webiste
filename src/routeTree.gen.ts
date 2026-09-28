@@ -22,6 +22,7 @@ import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as PaymentRouteImport } from './routes/payment'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 
@@ -90,6 +91,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentRoute = PaymentRouteImport.update({
+  id: '/payment',
+  path: '/payment',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
   path: '/wishlist',
@@ -115,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/shop': typeof ShopRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
+  '/payment': typeof PaymentRoute
   '/wishlist': typeof WishlistRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/shop': typeof ShopRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
+  '/payment': typeof PaymentRoute
   '/wishlist': typeof WishlistRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -150,6 +158,7 @@ export interface FileRoutesById {
   '/shop': typeof ShopRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
+  '/payment': typeof PaymentRoute
   '/wishlist': typeof WishlistRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -169,6 +178,7 @@ export interface FileRouteTypes {
     | '/shop'
     | '/support'
     | '/terms'
+    | '/payment'
     | '/wishlist'
     | '/product/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -186,6 +196,7 @@ export interface FileRouteTypes {
     | '/shop'
     | '/support'
     | '/terms'
+    | '/payment'
     | '/wishlist'
     | '/product/$slug'
   id:
@@ -203,6 +214,7 @@ export interface FileRouteTypes {
     | '/shop'
     | '/support'
     | '/terms'
+    | '/payment'
     | '/wishlist'
     | '/product/$slug'
   fileRoutesById: FileRoutesById
@@ -221,6 +233,7 @@ export interface RootRouteChildren {
   ShopRoute: typeof ShopRoute
   SupportRoute: typeof SupportRoute
   TermsRoute: typeof TermsRoute
+  PaymentRoute: typeof PaymentRoute
   WishlistRoute: typeof WishlistRoute
   ProductSlugRoute: typeof ProductSlugRoute
 }
@@ -318,6 +331,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payment': {
+      id: '/payment'
+      path: '/payment'
+      fullPath: '/payment'
+      preLoaderRoute: typeof PaymentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wishlist': {
       id: '/wishlist'
       path: '/wishlist'
@@ -349,6 +369,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShopRoute: ShopRoute,
   SupportRoute: SupportRoute,
   TermsRoute: TermsRoute,
+  PaymentRoute: PaymentRoute,
   WishlistRoute: WishlistRoute,
   ProductSlugRoute: ProductSlugRoute,
 }

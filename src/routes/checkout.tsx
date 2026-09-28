@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { getProduct } from "@/data/products";
 import { useCartStore } from "@/lib/cart-store";
 import { useHasHydrated } from "@/lib/hydrate";
-import { placeOrder } from "@/lib/orders-store";
 
 export const Route = createFileRoute("/checkout")({
   component: CheckoutPage,
@@ -23,7 +22,6 @@ type SavedAddress = {
 function CheckoutPage() {
   const hydrated = useHasHydrated();
   const lines = useCartStore((s) => s.lines);
-  const clear = useCartStore((s) => s.clear);
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [couponOpen, setCouponOpen] = useState(false);
@@ -76,28 +74,19 @@ function CheckoutPage() {
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (resolved.length === 0) return;
-    setBusy(true);
-
-    // use selected saved address if picked, else use form values
     const picked = savedAddresses.find((a) => a.id === selectedAddress);
-    const order = placeOrder({
-      name: picked ? picked.name : `${form.firstName} ${form.secondName}`.trim(),
-      email: form.email,
-      phone: picked ? picked.contact : form.phone,
-      address: picked ? picked.house : form.address,
-      city: picked ? picked.po : form.city,
-      pin: form.zip,
-      items: resolved.map((l) => ({
-        slug: l.slug,
-        name: l.product.name,
-        price: l.product.price,
-        qty: l.qty,
-      })),
-      total: subtotal,
+    void navigate({
+      to: "/payment",
+      search: {
+        name: picked ? picked.name : `${form.firstName} ${form.secondName}`.trim(),
+        email: form.email,
+        phone: picked ? picked.contact : form.phone,
+        address: picked ? picked.house : form.address,
+        city: picked ? picked.po : form.city,
+        zip: form.zip,
+        country: form.country,
+      },
     });
-    clear();
-    toast.success(`Order ${order.id} placed!`);
-    void navigate({ to: "/order-status", search: { id: order.id } });
   }
 
   if (hydrated && resolved.length === 0) {
