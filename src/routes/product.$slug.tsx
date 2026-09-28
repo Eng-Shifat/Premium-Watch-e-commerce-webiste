@@ -78,18 +78,58 @@ function ProductPage() {
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:gap-10 lg:gap-16">
 
           {/* ── Image area ── */}
-          <div className="flex w-full gap-3 md:w-auto md:flex-1 md:max-w-[500px] md:gap-4">
+          <div className="flex w-full flex-col gap-3 md:w-auto md:flex-1 md:max-w-[560px]">
 
-            {/* Thumbnail strip — vertical on desktop, hidden on mobile */}
+            {/* Desktop: thumbnail left + main image side by side, same height */}
+            <div className="hidden md:flex md:gap-3 md:h-[520px]">
+              {/* Thumbnail strip — full height, scrollable */}
+              {gallery.length > 1 && (
+                <div className="flex flex-col gap-2.5 h-full overflow-y-auto pr-0.5">
+                  {gallery.map((src, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setActiveImg(i)}
+                      className={cn(
+                        "w-[88px] shrink-0 overflow-hidden rounded-xl border-2 bg-soft p-2 transition-all duration-200",
+                        activeImg === i ? "border-ink" : "border-line hover:border-ink/40",
+                        gallery.length <= 3 ? "flex-1" : "h-[88px]",
+                      )}
+                    >
+                      <img src={src} alt={`View ${i + 1}`} className="h-full w-full object-contain" />
+                    </button>
+                  ))}
+                </div>
+              )}
+              {/* Main image — fills remaining width, full height */}
+              <div className="relative flex-1 h-full overflow-hidden rounded-2xl bg-soft p-8">
+                <img
+                  src={gallery[activeImg]}
+                  alt={product.name}
+                  className="h-full w-full object-contain transition-opacity duration-300"
+                />
+              </div>
+            </div>
+
+            {/* Mobile: main image full width */}
+            <div className="relative w-full overflow-hidden rounded-2xl bg-soft aspect-[4/5] p-6 md:hidden">
+              <img
+                src={gallery[activeImg]}
+                alt={product.name}
+                className="h-full w-full object-contain transition-opacity duration-300"
+              />
+            </div>
+
+            {/* Mobile thumbnail strip — horizontal */}
             {gallery.length > 1 && (
-              <div className="hidden md:flex md:flex-col md:gap-2.5">
+              <div className="flex gap-2.5 overflow-x-auto pb-1 md:hidden">
                 {gallery.map((src, i) => (
                   <button
                     key={i}
                     type="button"
                     onClick={() => setActiveImg(i)}
                     className={cn(
-                      "size-[80px] shrink-0 overflow-hidden rounded-xl border-2 bg-soft p-1.5 transition-all duration-200",
+                      "size-[60px] shrink-0 overflow-hidden rounded-xl border-2 bg-soft p-1.5 transition-all duration-200",
                       activeImg === i ? "border-ink" : "border-line hover:border-ink/40",
                     )}
                   >
@@ -98,35 +138,7 @@ function ProductPage() {
                 ))}
               </div>
             )}
-
-            {/* Main image */}
-            <div className="relative flex-1 overflow-hidden rounded-2xl bg-soft aspect-[4/5] p-6 sm:p-8">
-              <img
-                src={gallery[activeImg]}
-                alt={product.name}
-                className="h-full w-full object-contain transition-opacity duration-300"
-              />
-            </div>
           </div>
-
-          {/* Mobile thumbnail strip — horizontal, shown only on mobile */}
-          {gallery.length > 1 && (
-            <div className="flex gap-2.5 overflow-x-auto pb-1 md:hidden -mt-1">
-              {gallery.map((src, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setActiveImg(i)}
-                  className={cn(
-                    "size-[60px] shrink-0 overflow-hidden rounded-xl border-2 bg-soft p-1 transition-all duration-200",
-                    activeImg === i ? "border-ink" : "border-line hover:border-ink/40",
-                  )}
-                >
-                  <img src={src} alt={`View ${i + 1}`} className="h-full w-full object-contain" />
-                </button>
-              ))}
-            </div>
-          )}
 
           {/* ── Details ── */}
           <div className="flex w-full flex-col md:flex-1">
