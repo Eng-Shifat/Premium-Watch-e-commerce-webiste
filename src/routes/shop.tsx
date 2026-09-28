@@ -159,59 +159,61 @@ function ShopPage() {
   return (
     <main className="bg-paper text-ink">
 
-      {/* ── Mobile bottom sheet overlay ── */}
+      {/* ── Mobile dropdown overlay ── */}
       {filtersOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-ink/40 backdrop-blur-[2px]"
-            onClick={() => setFiltersOpen(false)}
-          />
-          {/* Sheet */}
-          <div className="absolute bottom-0 left-0 right-0 rounded-t-3xl bg-paper shadow-[0_-8px_40px_rgba(0,0,0,0.18)] animate-[sheet-up_300ms_cubic-bezier(0.22,1,0.36,1)_both]">
-            {/* Handle */}
-            <div className="flex justify-center pt-3 pb-1">
-              <div className="h-1 w-10 rounded-full bg-line" />
-            </div>
-            {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3 border-b border-line">
-              <h2 className="text-[15px] font-semibold text-ink">Filters</h2>
-              <div className="flex items-center gap-3">
-                {anyFilter && (
-                  <button
-                    type="button"
-                    onClick={clearAll}
-                    className="text-[12px] font-medium text-ash underline underline-offset-4"
-                  >
-                    Clear all
-                  </button>
-                )}
+        <div className="fixed inset-0 z-50 lg:hidden" onClick={() => setFiltersOpen(false)}>
+          <div className="absolute inset-0 bg-ink/20" />
+        </div>
+      )}
+      {/* Dropdown panel — sits below the trigger row */}
+      <div
+        className={cn(
+          "fixed left-0 right-0 z-50 lg:hidden transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          filtersOpen
+            ? "opacity-100 translate-y-0 pointer-events-auto"
+            : "opacity-0 -translate-y-3 pointer-events-none",
+        )}
+        style={{ top: "64px" }}
+      >
+        <div className="mx-4 rounded-2xl bg-paper shadow-[0_8px_32px_rgba(0,0,0,0.14)] border border-line overflow-hidden">
+          {/* Header */}
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-line">
+            <h2 className="text-[14px] font-semibold text-ink">Filters</h2>
+            <div className="flex items-center gap-3">
+              {anyFilter && (
                 <button
                   type="button"
-                  onClick={() => setFiltersOpen(false)}
-                  className="flex size-8 items-center justify-center rounded-full bg-soft text-ink/60 hover:bg-line"
+                  onClick={clearAll}
+                  className="text-[12px] font-medium text-ash underline underline-offset-4"
                 >
-                  ✕
+                  Clear all
                 </button>
-              </div>
-            </div>
-            {/* Content */}
-            <div className="overflow-y-auto px-5 pb-8 pt-2 max-h-[70vh]">
-              {filterContent}
-            </div>
-            {/* Apply button */}
-            <div className="px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-2 border-t border-line">
+              )}
               <button
                 type="button"
                 onClick={() => setFiltersOpen(false)}
-                className="w-full h-12 rounded-full bg-ink text-paper text-[14px] font-semibold tracking-wide transition-all active:scale-95"
+                className="flex size-7 items-center justify-center rounded-full bg-soft text-ink/50 text-[13px] hover:bg-line"
               >
-                {list.length > 0 ? `Show ${list.length} Results` : "No Results"}
+                ✕
               </button>
             </div>
           </div>
+          {/* Content */}
+          <div className="px-5 pt-2 pb-4 max-h-[60vh] overflow-y-auto">
+            {filterContent}
+          </div>
+          {/* Apply */}
+          <div className="px-5 pb-4 pt-1">
+            <button
+              type="button"
+              onClick={() => setFiltersOpen(false)}
+              className="w-full h-11 rounded-full bg-ink text-paper text-[13px] font-semibold tracking-wide transition-all active:scale-95"
+            >
+              {list.length > 0 ? `Show ${list.length} Results` : "No Results"}
+            </button>
+          </div>
         </div>
-      )}
+      </div>
 
       <div className="site-wrap pt-6 pb-16 md:pt-8 md:pb-20">
         <div className="lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-0">
