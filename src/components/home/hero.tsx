@@ -9,7 +9,7 @@ export function Hero() {
         src="/images/hero/hero1.png"
         alt=""
         fetchPriority="high"
-        className="absolute inset-0 w-full h-full object-cover object-center"
+        className="absolute inset-0 w-full h-full object-cover object-[62%_center] sm:object-center"
       />
       {/* light overlay on mobile so text stays readable */}
       <div className="absolute inset-0 bg-hero/60 sm:bg-transparent" />
