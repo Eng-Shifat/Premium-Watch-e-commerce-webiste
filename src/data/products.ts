@@ -5,6 +5,8 @@ export type Collection = "studio" | "atelier";
 export type Product = {
   slug: string;
   name: string;
+  /** shown in the Shop sidebar "Brand" filter — edit freely */
+  brand: string;
   price: number;
   compareAt?: number;
   gender: Gender;
@@ -24,6 +26,7 @@ export const products: Product[] = [
   {
     slug: "chronographs",
     name: "Chronographs",
+    brand: "Swiss Eagle",
     price: 6500,
     compareAt: 6500,
     gender: "men",
@@ -48,6 +51,7 @@ export const products: Product[] = [
   {
     slug: "aviator-watches",
     name: "Aviator Watches",
+    brand: "SunMate",
     price: 16000,
     compareAt: 16000,
     gender: "women",
@@ -73,6 +77,7 @@ export const products: Product[] = [
   {
     slug: "onlyou-3rd-edition",
     name: "ONLYOU 3rd edition",
+    brand: "OnlYou",
     price: 11000,
     compareAt: 11000,
     gender: "men",
@@ -97,6 +102,7 @@ export const products: Product[] = [
   {
     slug: "sunmate-green-edition",
     name: "SunMate Green Edition",
+    brand: "SunMate",
     price: 24000,
     compareAt: 24000,
     gender: "women",
@@ -122,6 +128,7 @@ export const products: Product[] = [
   {
     slug: "chronographs-nl",
     name: "Chronographs",
+    brand: "Swiss Eagle",
     price: 6500,
     compareAt: 6500,
     gender: "men",
@@ -141,6 +148,7 @@ export const products: Product[] = [
   {
     slug: "aviator-watches-nl",
     name: "Aviator Watches",
+    brand: "SunMate",
     price: 16000,
     compareAt: 16000,
     gender: "women",
@@ -160,6 +168,7 @@ export const products: Product[] = [
   {
     slug: "onlyou-3rd-edition-nl",
     name: "ONLYOU 3rd edition",
+    brand: "OnlYou",
     price: 11000,
     compareAt: 11000,
     gender: "men",
@@ -179,6 +188,7 @@ export const products: Product[] = [
   {
     slug: "sunmate-green-edition-nl",
     name: "SunMate Green Edition",
+    brand: "SunMate",
     price: 24000,
     compareAt: 24000,
     gender: "women",

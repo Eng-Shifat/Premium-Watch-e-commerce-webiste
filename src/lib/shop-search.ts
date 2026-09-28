@@ -1,24 +1,52 @@
+export type SortKey = "featured" | "price-asc" | "price-desc";
+
+/**
+ * Everything the Shop page filters on lives in the URL, so a filtered view can be
+ * shared / bookmarked and footer links like /shop?gender=men keep working.
+ * gender and brand are comma-separated lists ("men,women").
+ */
 export type ShopSearch = {
-  gender?: "men" | "women" | "unisex";
-  strap?: "leather" | "steel" | "mesh" | "bracelet";
-  collection?: "studio" | "atelier";
-  sort?: "featured" | "price-asc" | "price-desc";
+  gender?: string;
+  brand?: string;
+  q?: string;
+  min?: number;
+  max?: number;
+  sort?: SortKey;
 };
 
 const genders = new Set(["men", "women", "unisex"]);
-const straps = new Set(["leather", "steel", "mesh", "bracelet"]);
-const collections = new Set(["studio", "atelier"]);
-const sorts = new Set(["featured", "price-asc", "price-desc"]);
+const sorts = new Set<string>(["featured", "price-asc", "price-desc"]);
+
+export function splitList(value?: string): string[] {
+  return value ? value.split(",").filter(Boolean) : [];
+}
+
+export function joinList(values: string[]): string | undefined {
+  return values.length ? values.join(",") : undefined;
+}
+
+function asText(v: unknown): string | undefined {
+  // the router turns "123" into the number 123 when it parses the URL
+  if (typeof v === "string") return v.trim() || undefined;
+  if (typeof v === "number" && Number.isFinite(v)) return String(v);
+  return undefined;
+}
+
+function asAmount(v: unknown): number | undefined {
+  const n = typeof v === "number" ? v : typeof v === "string" ? Number(v) : NaN;
+  return Number.isFinite(n) && n >= 0 ? Math.floor(n) : undefined;
+}
 
 export function parseShopSearch(s: Record<string, unknown>): ShopSearch {
+  const gender = joinList(splitList(asText(s.gender)).filter((g) => genders.has(g)));
+  const brand = asText(s.brand)?.slice(0, 200);
+  const q = asText(s.q)?.slice(0, 80);
   return {
-    gender: typeof s.gender === "string" && genders.has(s.gender) ? (s.gender as ShopSearch["gender"]) : undefined,
-    strap: typeof s.strap === "string" && straps.has(s.strap) ? (s.strap as ShopSearch["strap"]) : undefined,
-    collection:
-      typeof s.collection === "string" && collections.has(s.collection)
-        ? (s.collection as ShopSearch["collection"])
-        : undefined,
-    sort:
-      typeof s.sort === "string" && sorts.has(s.sort) ? (s.sort as ShopSearch["sort"]) : undefined,
+    gender,
+    brand,
+    q,
+    min: asAmount(s.min),
+    max: asAmount(s.max),
+    sort: typeof s.sort === "string" && sorts.has(s.sort) ? (s.sort as SortKey) : undefined,
   };
 }
