@@ -19,49 +19,26 @@ export function Logo({
       aria-label="UrbanTick home"
     >
       <svg viewBox="0 0 32 32" className="size-7" aria-hidden="true" fill="none">
-        {/* Clock face */}
-        <circle cx="16" cy="16" r="12.25" stroke="currentColor" strokeWidth="1.4" />
+        {/* Outer circle */}
+        <circle cx="16" cy="16" r="13.5" stroke="currentColor" strokeWidth="1" opacity="0.35" />
+        {/* Inner circle */}
+        <circle cx="16" cy="16" r="10.5" stroke="currentColor" strokeWidth="1.4" />
+        {/* Center dot */}
         <circle cx="16" cy="16" r="1.15" fill="currentColor" />
-
-        {/* Minute hand — rotates fast (60s per revolution) */}
-        <line
-          x1="16" y1="16"
-          x2="16" y2="6.5"
-          stroke="currentColor"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-          style={{ transformOrigin: "16px 16px" }}
-        >
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            from="0 16 16"
-            to="360 16 16"
-            dur="6s"
-            repeatCount="indefinite"
-          />
+        {/* Minute hand — fast */}
+        <line x1="16" y1="16" x2="16" y2="8.2"
+          stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
+          <animateTransform attributeName="transform" type="rotate"
+            from="0 16 16" to="360 16 16" dur="1.5s" repeatCount="indefinite" />
         </line>
-
-        {/* Hour hand — rotates slow (12x slower) */}
-        <line
-          x1="16" y1="16"
-          x2="21" y2="19.5"
-          stroke="currentColor"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-          style={{ transformOrigin: "16px 16px" }}
-        >
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            from="0 16 16"
-            to="360 16 16"
-            dur="72s"
-            repeatCount="indefinite"
-          />
+        {/* Hour hand — slower */}
+        <line x1="16" y1="16" x2="20.5" y2="19"
+          stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
+          <animateTransform attributeName="transform" type="rotate"
+            from="0 16 16" to="360 16 16" dur="18s" repeatCount="indefinite" />
         </line>
       </svg>
-      <span>URBANTICK</span>
+      <span className="logo-text">URBANTICK</span>
     </Link>
   );
 }
