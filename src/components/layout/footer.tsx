@@ -25,10 +25,11 @@ const about = [
 export function Footer() {
   return (
     <footer className="bg-navy text-paper">
-      <div className="site-wrap flex flex-col items-center pt-14 pb-6">
-        <Logo invert className="mb-12" />
+      <div className="site-wrap flex flex-col items-center pt-12 pb-6">
+        <Logo invert className="mb-10" />
 
-        <div className="grid w-full grid-cols-2 gap-10 md:grid-cols-5">
+        {/* Mobile: 2 col, md: 5 col */}
+        <div className="grid w-full grid-cols-2 gap-8 sm:gap-10 md:grid-cols-5">
           <Col title="SHOP">
             {shop.map((l) => (
               <Link
@@ -67,7 +68,7 @@ export function Footer() {
             <p className="mb-4 text-[13px] font-medium tracking-wide">Contact</p>
             <p className="text-[13px] text-cloud/90">
               Email :{" "}
-              <a href="mailto:urbantick@gmail.com" className="hover:text-paper">
+              <a href="mailto:urbantick@gmail.com" className="hover:text-paper break-all">
                 urbantick@gmail.com
               </a>
             </p>
@@ -81,31 +82,13 @@ export function Footer() {
           <div>
             <p className="mb-4 text-[13px] font-medium tracking-wide">Connect with us</p>
             <div className="flex items-center gap-4">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Instagram"
-                className="text-paper transition-opacity duration-150 hover:opacity-70"
-              >
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="text-paper transition-opacity duration-150 hover:opacity-70">
                 <Instagram className="size-4" />
               </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Facebook"
-                className="text-paper transition-opacity duration-150 hover:opacity-70"
-              >
+              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="text-paper transition-opacity duration-150 hover:opacity-70">
                 <Facebook className="size-4" />
               </a>
-              <a
-                href="https://x.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="X"
-                className="text-paper transition-opacity duration-150 hover:opacity-70"
-              >
+              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X" className="text-paper transition-opacity duration-150 hover:opacity-70">
                 <XMark />
               </a>
             </div>
@@ -113,7 +96,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-paper/10">
-        <p className="site-wrap py-4 text-[11px] text-cloud/70">
+        <p className="site-wrap py-4 text-[11px] text-cloud/70 text-center md:text-left">
           © 2024 UrbanTick. All Rights Reserved.
         </p>
       </div>

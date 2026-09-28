@@ -3,16 +3,17 @@ import { looks } from "@/data/products";
 
 export function HandPicked() {
   return (
-    <section className="bg-paper pb-20">
+    <section className="bg-paper py-10 pb-16 md:pb-20">
       <div className="site-wrap">
-        <h2 className="text-center font-display text-2xl font-medium tracking-wide text-ink md:text-[28px]">
+        <h2 className="text-center font-display text-xl sm:text-2xl font-medium tracking-wide text-ink md:text-[28px]">
           Hand Picked
         </h2>
-        <p className="mx-auto mt-3 max-w-lg text-center text-[13px] leading-relaxed text-ash">
+        <p className="mx-auto mt-3 max-w-lg text-center text-[12px] sm:text-[13px] leading-relaxed text-ash">
           Discover our hand-picked collection, featuring watches chosen for their quality,
           style, and timeless appeal.
         </p>
-        <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {/* Mobile: single column, sm+: 3 col */}
+        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
           {looks.map((look) => (
             <Link
               key={look.src}
