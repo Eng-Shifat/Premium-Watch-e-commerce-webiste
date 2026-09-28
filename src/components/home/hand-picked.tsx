@@ -3,9 +3,9 @@ import { looks } from "@/data/products";
 
 export function HandPicked() {
   return (
-    <section className="bg-void pb-20">
+    <section className="bg-paper pb-20">
       <div className="site-wrap">
-        <h2 className="text-center font-display text-2xl font-medium tracking-wide text-mist md:text-[28px]">
+        <h2 className="text-center font-display text-2xl font-medium tracking-wide text-ink md:text-[28px]">
           Hand Picked
         </h2>
         <p className="mx-auto mt-3 max-w-lg text-center text-[13px] leading-relaxed text-ash">

@@ -16,8 +16,8 @@
   --color-line: #ece8e6;
   --color-line-dark: #1c1c1c;
   --color-soft: #f6f4f2;
-  --color-card: #ffffff;
-  --color-muted-dark: #b3b3b3;
+  --color-card: #f6f4f2;
+  --color-muted-dark: #161616;
 
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
@@ -25,7 +25,7 @@
   --radius-xl: 1rem;
   --radius-2xl: 1.25rem;
 
-  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.04);
+  --shadow-card: 0 1px 3px rgb(0 0 0 / 0.08);
 }
 
 @layer base {
@@ -37,15 +37,12 @@
 
   html,
   body {
-    background: var(--color-void);
-    color: var(--color-paper);
+    background: var(--color-paper);
+    color: var(--color-ink);
     font-family: var(--font-sans);
   }
 
-  h1,
-  h2,
-  h3,
-  h4 {
+  h1, h2, h3, h4 {
     text-wrap: balance;
   }
 
@@ -59,8 +56,7 @@
   }
 
   img {
-    outline: 1px solid rgb(0 0 0 / 0.06);
-    outline-offset: -1px;
+    outline: none;
   }
 
   ::selection {
@@ -70,9 +66,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -109,15 +103,7 @@
   animation: fade-up 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.stagger-in > *:nth-child(1) {
-  animation-delay: 40ms;
-}
-.stagger-in > *:nth-child(2) {
-  animation-delay: 120ms;
-}
-.stagger-in > *:nth-child(3) {
-  animation-delay: 200ms;
-}
-.stagger-in > *:nth-child(4) {
-  animation-delay: 280ms;
-}
+.stagger-in > *:nth-child(1) { animation-delay: 40ms; }
+.stagger-in > *:nth-child(2) { animation-delay: 120ms; }
+.stagger-in > *:nth-child(3) { animation-delay: 200ms; }
+.stagger-in > *:nth-child(4) { animation-delay: 280ms; }
