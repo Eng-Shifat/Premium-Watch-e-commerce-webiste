@@ -4,7 +4,7 @@ import { Reveal } from "@/components/motion/reveal";
 
 export function HandPicked() {
   return (
-    <section className="bg-paper py-8 pb-10 sm:py-10 sm:pb-16 md:pb-20">
+    <section className="bg-paper py-6 pb-8 sm:py-8 sm:pb-10 md:pb-14">
       <div className="site-wrap">
         <Reveal>
         <h2 className="text-center font-display text-xl sm:text-2xl font-medium tracking-wide text-ink md:text-[28px]">

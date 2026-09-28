@@ -14,7 +14,7 @@ const desktopSlots = [
 
 export function CategoryMosaic() {
   return (
-    <section className="bg-paper py-10 md:py-16 lg:py-20">
+    <section className="bg-paper py-6 md:py-10 lg:py-14">
       <div className="site-wrap">
         <Reveal>
         <h2 className="text-center font-display text-xl sm:text-2xl font-medium tracking-wide text-ink md:text-[28px]">
