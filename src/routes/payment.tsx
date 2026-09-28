@@ -24,48 +24,12 @@ export const Route = createFileRoute("/payment")({
 type PayMethod = "bkash" | "nagad" | "rocket" | "card" | "netbanking" | "cod";
 
 const METHODS: { id: PayMethod; label: string; color: string; bg: string; desc: string }[] = [
-  {
-    id: "bkash",
-    label: "bKash",
-    color: "#E2136E",
-    bg: "#FFF0F7",
-    desc: "Pay with your bKash mobile wallet",
-  },
-  {
-    id: "nagad",
-    label: "Nagad",
-    color: "#F15A22",
-    bg: "#FFF4EF",
-    desc: "Pay with Nagad mobile banking",
-  },
-  {
-    id: "rocket",
-    label: "Rocket",
-    color: "#8B1FA9",
-    bg: "#F9F0FC",
-    desc: "Pay via Dutch-Bangla Rocket wallet",
-  },
-  {
-    id: "card",
-    label: "Credit / Debit Card",
-    color: "#1A56DB",
-    bg: "#EFF6FF",
-    desc: "Visa, Mastercard, AMEX accepted",
-  },
-  {
-    id: "netbanking",
-    label: "Net Banking",
-    color: "#0E7490",
-    bg: "#ECFEFF",
-    desc: "All major Bangladesh banks supported",
-  },
-  {
-    id: "cod",
-    label: "Cash On Delivery",
-    color: "#374151",
-    bg: "#F3F4F6",
-    desc: "Pay in cash when your order arrives",
-  },
+  { id: "bkash",      label: "bKash",             color: "#E2136E", bg: "#FFF0F7", desc: "Pay with your bKash mobile wallet" },
+  { id: "nagad",      label: "Nagad",              color: "#F15A22", bg: "#FFF4EF", desc: "Pay with Nagad mobile banking" },
+  { id: "rocket",     label: "Rocket",             color: "#8B1FA9", bg: "#F9F0FC", desc: "Pay via Dutch-Bangla Rocket wallet" },
+  { id: "card",       label: "Credit / Debit Card",color: "#1A56DB", bg: "#EFF6FF", desc: "Visa, Mastercard, AMEX accepted" },
+  { id: "netbanking", label: "Net Banking",        color: "#0E7490", bg: "#ECFEFF", desc: "All major Bangladesh banks supported" },
+  { id: "cod",        label: "Cash On Delivery",   color: "#374151", bg: "#F3F4F6", desc: "Pay in cash when your order arrives" },
 ];
 
 // bKash icon SVG
