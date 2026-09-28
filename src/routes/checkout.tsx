@@ -12,7 +12,6 @@ export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — UrbanTick" }] }),
 });
 
-// Saved address type
 type SavedAddress = {
   id: string;
   name: string;
@@ -20,11 +19,6 @@ type SavedAddress = {
   po: string;
   contact: string;
 };
-
-const DEMO_ADDRESSES: SavedAddress[] = [
-  { id: "a1", name: "Arun B", house: "Arun House , Junction", po: "P.O 555555", contact: "8888888888" },
-  { id: "a2", name: "Arun B", house: "Arun House , Junction", po: "P.O 555555", contact: "8888888888" },
-];
 
 function CheckoutPage() {
   const hydrated = useHasHydrated();
@@ -34,10 +28,9 @@ function CheckoutPage() {
   const [busy, setBusy] = useState(false);
   const [couponOpen, setCouponOpen] = useState(false);
   const [coupon, setCoupon] = useState("");
-  const [selectedAddress, setSelectedAddress] = useState("a1");
-  const [showAddressForm, setShowAddressForm] = useState(true);
+  const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+  const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
 
-  // form fields
   const [form, setForm] = useState({
     email: "", firstName: "", secondName: "",
     address: "", city: "", zip: "", country: "", phone: "",
@@ -57,16 +50,42 @@ function CheckoutPage() {
       setForm((prev) => ({ ...prev, [k]: e.target.value }));
   }
 
+  function handleAddNewAddress() {
+    if (!form.firstName && !form.address) {
+      toast.error("Please fill in the address fields first.");
+      return;
+    }
+    if (savedAddresses.length >= 2) {
+      toast.error("Maximum 2 addresses allowed.");
+      return;
+    }
+    const newAddr: SavedAddress = {
+      id: `addr-${Date.now()}`,
+      name: `${form.firstName} ${form.secondName}`.trim(),
+      house: form.address,
+      po: `${form.city}${form.zip ? ` - ${form.zip}` : ""}`,
+      contact: form.phone,
+    };
+    setSavedAddresses((prev) => [...prev, newAddr]);
+    setSelectedAddress(newAddr.id);
+    toast.success("Address saved!");
+    // clear form for next entry
+    setForm({ email: form.email, firstName: "", secondName: "", address: "", city: "", zip: "", country: "", phone: "" });
+  }
+
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (resolved.length === 0) return;
     setBusy(true);
+
+    // use selected saved address if picked, else use form values
+    const picked = savedAddresses.find((a) => a.id === selectedAddress);
     const order = placeOrder({
-      name: `${form.firstName} ${form.secondName}`.trim(),
+      name: picked ? picked.name : `${form.firstName} ${form.secondName}`.trim(),
       email: form.email,
-      phone: form.phone,
-      address: form.address,
-      city: form.city,
+      phone: picked ? picked.contact : form.phone,
+      address: picked ? picked.house : form.address,
+      city: picked ? picked.po : form.city,
       pin: form.zip,
       items: resolved.map((l) => ({
         slug: l.slug,
@@ -102,47 +121,33 @@ function CheckoutPage() {
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
           {/* ── Shipping form ── */}
           <div className="min-w-0 flex-1 rounded-xl border border-line">
-            {/* Section header */}
             <div className="border-b border-line px-6 py-4">
               <h2 className="text-[15px] font-medium text-ink">Shipping</h2>
             </div>
 
             <form onSubmit={onSubmit} className="px-6 py-6 space-y-4">
-              {/* Email */}
-              <Field
-                placeholder="Email*"
-                type="email"
-                value={form.email}
-                onChange={set("email")}
-                required
-              />
+              <Field placeholder="Email*" type="email" value={form.email} onChange={set("email")} required />
 
-              {/* First / Second name */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <Field placeholder="First Name*" value={form.firstName} onChange={set("firstName")} required />
-                <Field placeholder="Second Name*" value={form.secondName} onChange={set("secondName")} required />
+                <Field placeholder="First Name*" value={form.firstName} onChange={set("firstName")} />
+                <Field placeholder="Second Name*" value={form.secondName} onChange={set("secondName")} />
               </div>
 
-              {/* Address */}
-              <Field placeholder="Address*" value={form.address} onChange={set("address")} required />
+              <Field placeholder="Address*" value={form.address} onChange={set("address")} />
 
-              {/* City / Zip */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <Field placeholder="City*" value={form.city} onChange={set("city")} required />
-                <Field placeholder="Zip Code*" value={form.zip} onChange={set("zip")} required />
+                <Field placeholder="City*" value={form.city} onChange={set("city")} />
+                <Field placeholder="Zip Code*" value={form.zip} onChange={set("zip")} />
               </div>
 
-              {/* Country */}
-              <Field placeholder="Country*" value={form.country} onChange={set("country")} required />
+              <Field placeholder="Country*" value={form.country} onChange={set("country")} />
+              <Field placeholder="Phone number*" type="tel" value={form.phone} onChange={set("phone")} />
 
-              {/* Phone */}
-              <Field placeholder="Phone number*" type="tel" value={form.phone} onChange={set("phone")} required />
-
-              {/* Buttons */}
+              {/* Action buttons */}
               <div className="flex flex-wrap gap-3 pt-1">
                 <button
                   type="button"
-                  onClick={() => setShowAddressForm(true)}
+                  onClick={handleAddNewAddress}
                   className="rounded-full bg-ink px-5 py-2.5 text-[13px] font-medium text-paper transition-opacity hover:opacity-75"
                 >
                   Add New Address
@@ -156,32 +161,32 @@ function CheckoutPage() {
                 </button>
               </div>
 
-              {/* Saved addresses */}
-              <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-2">
-                {DEMO_ADDRESSES.map((addr, i) => (
-                  <div key={addr.id}>
-                    <p className="mb-2 text-[13px] font-medium text-ink">
-                      Address{i + 1}
-                    </p>
-                    <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-line p-3 transition-colors hover:border-ash">
-                      <input
-                        type="radio"
-                        name="saved-address"
-                        value={addr.id}
-                        checked={selectedAddress === addr.id}
-                        onChange={() => setSelectedAddress(addr.id)}
-                        className="mt-0.5 shrink-0 accent-ink"
-                      />
-                      <div className="text-[12px] leading-relaxed text-ash">
-                        <p className="font-medium text-ink">{addr.name}</p>
-                        <p>{addr.house}</p>
-                        <p>{addr.po}</p>
-                        <p>Contact number : {addr.contact}</p>
-                      </div>
-                    </label>
-                  </div>
-                ))}
-              </div>
+              {/* Saved addresses grid */}
+              {savedAddresses.length > 0 && (
+                <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-2">
+                  {savedAddresses.map((addr, i) => (
+                    <div key={addr.id}>
+                      <p className="mb-2 text-[13px] font-medium text-ink">Address{i + 1}</p>
+                      <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-line bg-paper p-3 transition-colors hover:border-ash">
+                        <input
+                          type="radio"
+                          name="saved-address"
+                          value={addr.id}
+                          checked={selectedAddress === addr.id}
+                          onChange={() => setSelectedAddress(addr.id)}
+                          className="mt-0.5 shrink-0 accent-ink"
+                        />
+                        <div className="text-[12px] leading-relaxed text-ash">
+                          <p className="font-medium text-ink">{addr.name}</p>
+                          <p>{addr.house}</p>
+                          <p>{addr.po}</p>
+                          {addr.contact && <p>Contact number : {addr.contact}</p>}
+                        </div>
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
             </form>
           </div>
 
@@ -225,10 +230,7 @@ function CheckoutPage() {
                   placeholder="Enter code"
                   className="flex-1 rounded-lg border border-line px-3 py-2.5 text-[13px] text-ink outline-none focus:border-ink transition-colors"
                 />
-                <button
-                  type="button"
-                  className="rounded-lg bg-ink px-4 py-2.5 text-[13px] font-medium text-paper hover:opacity-80 transition-opacity"
-                >
+                <button type="button" className="rounded-lg bg-ink px-4 py-2.5 text-[13px] font-medium text-paper hover:opacity-80 transition-opacity">
                   Apply
                 </button>
               </div>
@@ -236,7 +238,7 @@ function CheckoutPage() {
 
             <button
               type="button"
-              onClick={(e) => { e.preventDefault(); document.querySelector("form")?.requestSubmit(); }}
+              onClick={() => { document.querySelector("form")?.requestSubmit(); }}
               disabled={busy}
               className="mt-4 flex w-full items-center justify-center rounded-full bg-ink py-3.5 text-[13px] font-semibold tracking-[0.1em] text-paper transition-opacity hover:opacity-80 disabled:opacity-50"
             >
@@ -249,14 +251,10 @@ function CheckoutPage() {
   );
 }
 
-function Field({
-  placeholder,
-  ...props
-}: React.InputHTMLAttributes<HTMLInputElement> & { placeholder: string }) {
+function Field(props: React.InputHTMLAttributes<HTMLInputElement> & { placeholder: string }) {
   return (
     <input
-      placeholder={placeholder}
-      className="w-full rounded-lg border border-line bg-paper px-4 py-3 text-[13px] text-ink outline-none placeholder:text-ash/70 focus:border-ink transition-colors"
+      className="w-full rounded-lg border border-line bg-[#f0f4ff]/40 px-4 py-3 text-[13px] text-ink outline-none placeholder:text-ash/70 focus:border-ink focus:bg-paper transition-colors"
       {...props}
     />
   );
