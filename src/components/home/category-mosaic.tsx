@@ -3,6 +3,15 @@ import { categories } from "@/data/products";
 import { Reveal } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
 
+// Desktop layout: [ tall | stacked | tall ] — every tile is placed explicitly so
+// grid auto-placement can never push a tile into the wrong cell.
+const desktopSlots = [
+  "lg:col-start-1 lg:row-start-1 lg:row-span-2", // Women's  (left, tall)
+  "lg:col-start-2 lg:row-start-1", //                Steel    (middle, top)
+  "lg:col-start-2 lg:row-start-2", //                Leather  (middle, bottom)
+  "lg:col-start-3 lg:row-start-1 lg:row-span-2", // Men's    (right, tall)
+];
+
 export function CategoryMosaic() {
   return (
     <section className="bg-paper py-10 md:py-16 lg:py-20">
@@ -17,19 +26,18 @@ export function CategoryMosaic() {
         </p>
         </Reveal>
         {/* Mobile: 2 col grid, Desktop: mosaic */}
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-3 lg:h-[520px] lg:grid-cols-[1.2fr_0.95fr_1.2fr] lg:grid-rows-2">
+        <div className="mt-8 grid grid-cols-2 gap-3 lg:h-[560px] lg:gap-6 lg:grid-cols-[1.2fr_0.95fr_1.2fr] lg:grid-rows-2">
           {categories.map((cat, i) => (
             <Reveal
               key={cat.slug}
               variant="scale"
               delay={i * 90}
-              className={cn((i === 0 || i === 3) && "lg:row-span-2")}
+              className={desktopSlots[i]}
             >
               <Link
                 to="/shop"
                 className={cn(
-                  "group relative block h-full min-h-[160px] overflow-hidden rounded-xl sm:min-h-[200px]",
-                  (i === 0 || i === 3) && "lg:min-h-0",
+                  "group relative block h-full min-h-[160px] overflow-hidden rounded-xl sm:min-h-[200px] lg:min-h-0",
                 )}
               >
                 <img
@@ -39,10 +47,7 @@ export function CategoryMosaic() {
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />
-                <span className="absolute bottom-3 left-3 font-display text-[13px] text-white sm:bottom-4 sm:left-4 md:text-xl">
-                  {cat.name}
-                </span>
+                {/* the category name is already printed on the photo itself, so no text overlay here */}
               </Link>
             </Reveal>
           ))}
