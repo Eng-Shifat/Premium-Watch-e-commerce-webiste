@@ -2,6 +2,7 @@ import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-r
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { SiteShell } from "@/components/layout/site-shell";
+import { SplashScreen } from "@/components/brand/splash-screen";
 import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 
@@ -41,6 +42,7 @@ function Root() {
         <HeadContent />
       </head>
       <body className="font-sans">
+        <SplashScreen />
         <PreviewHostBridge />
         <AuthProvider>
           <SiteShell>

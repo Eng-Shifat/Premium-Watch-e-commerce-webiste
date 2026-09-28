@@ -218,6 +218,26 @@
   to   { transform: translateY(0); }
 }
 
+/* ── Splash screen ── */
+@keyframes splash-logo-in {
+  0%   { opacity: 0; transform: scale(0.82) translateY(10px); filter: blur(8px); }
+  60%  { opacity: 1; transform: scale(1.03) translateY(0);    filter: blur(0); }
+  100% { opacity: 1; transform: scale(1)    translateY(0);    filter: blur(0); }
+}
+
+@keyframes splash-progress {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+.splash-logo {
+  animation: splash-logo-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.splash-progress {
+  animation: splash-progress 1800ms cubic-bezier(0.4, 0, 0.2, 1) 200ms both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; }
   .shop-card { animation: none; opacity: 1; }
