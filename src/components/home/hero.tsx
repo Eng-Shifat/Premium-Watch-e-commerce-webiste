@@ -15,7 +15,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-linear-to-r from-hero/95 from-30% via-hero/50 via-55% to-transparent to-75% sm:hidden" />
 
       {/* +72px = the transparent header that floats over the hero */}
-      <div className="relative z-10 flex items-end min-h-[340px] pt-[72px] pb-8 sm:items-center sm:min-h-[420px] sm:pb-0 md:min-h-[560px]">
+      <div className="relative z-10 flex items-center min-h-[300px] pb-6 pt-6 sm:min-h-[380px] md:min-h-[480px]">
         <div className="site-wrap w-full">
           <div className="stagger-in max-w-[340px] sm:max-w-[380px] md:max-w-[420px]">
             <p className="text-[10px] sm:text-[11px] font-semibold tracking-[0.3em] text-rose uppercase mb-3 sm:mb-5">

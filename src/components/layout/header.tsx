@@ -36,10 +36,10 @@ export function Header() {
 
   // On the home page the bar is fully transparent over the hero until you scroll.
   // Everywhere else (dark pages) it is always frosted glass.
-  const glass = scrolled || open || !isHome;
+  const glass = true;
 
   return (
-    <header className={cn("header-in sticky top-0 z-40 text-ink", isHome && "-mb-[72px]")}>
+    <header className="header-in sticky top-0 z-40 text-ink">
       {/* glass layer — separate from the content so the mobile menu can blur on its own */}
       <div
         aria-hidden="true"
