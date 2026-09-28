@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { Heart, Star, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { ProductCard } from "@/components/product/product-card";
@@ -48,6 +48,8 @@ function getMeta(slug: string) {
 function ProductPage() {
   const { product } = Route.useLoaderData();
   const add = useCartStore((s) => s.add);
+  const setQty = useCartStore((s) => s.setQty);
+  const navigate = useNavigate();
   const hydrated = useHasHydrated();
   const wished = useWishlistStore((s) => s.slugs.includes(product.slug));
   const toggleWish = useWishlistStore((s) => s.toggle);
@@ -234,8 +236,11 @@ function ProductPage() {
               <button
                 type="button"
                 onClick={() => {
-                  add(product.slug, 1);
-                  toast.success(`${product.name} added to bag`);
+                  // Buy Now: make sure the watch is in the bag (at least 1) and jump straight to checkout
+                  const inCart = useCartStore.getState().lines.find((l) => l.slug === product.slug);
+                  if (inCart) setQty(product.slug, Math.max(inCart.qty, 1));
+                  else add(product.slug, 1);
+                  void navigate({ to: "/checkout" });
                 }}
                 className="h-12 flex-1 rounded-full bg-ink px-6 text-[14px] font-semibold text-paper transition-all duration-200 hover:bg-ink/85 hover:shadow-[0_8px_24px_rgba(0,0,0,0.18)] active:scale-95 sm:flex-none sm:px-10"
               >
