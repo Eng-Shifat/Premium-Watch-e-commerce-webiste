@@ -75,22 +75,43 @@ function ProductPage() {
       <div className="site-wrap py-6 md:py-10 lg:py-14">
 
         {/* Mobile: stacked. Desktop: side by side */}
-        <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-10 lg:gap-16">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:gap-10 lg:gap-16">
 
           {/* ── Image area ── */}
-          <div className="flex w-full flex-col gap-3 md:w-auto md:flex-1 md:max-w-[480px]">
+          <div className="flex w-full gap-3 md:w-auto md:flex-1 md:max-w-[500px] md:gap-4">
+
+            {/* Thumbnail strip — vertical on desktop, hidden on mobile */}
+            {gallery.length > 1 && (
+              <div className="hidden md:flex md:flex-col md:gap-2.5">
+                {gallery.map((src, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveImg(i)}
+                    className={cn(
+                      "size-[80px] shrink-0 overflow-hidden rounded-xl border-2 bg-soft p-1.5 transition-all duration-200",
+                      activeImg === i ? "border-ink" : "border-line hover:border-ink/40",
+                    )}
+                  >
+                    <img src={src} alt={`View ${i + 1}`} className="h-full w-full object-contain" />
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Main image */}
-            <div className="relative w-full overflow-hidden rounded-2xl bg-soft aspect-square p-6 sm:aspect-[4/5] sm:p-8">
+            <div className="relative flex-1 overflow-hidden rounded-2xl bg-soft aspect-[4/5] p-6 sm:p-8">
               <img
                 src={gallery[activeImg]}
                 alt={product.name}
                 className="h-full w-full object-contain transition-opacity duration-300"
               />
             </div>
+          </div>
 
-            {/* Thumbnail strip — horizontal on mobile, hidden on md (shown on left side) */}
-            <div className="flex gap-2.5 overflow-x-auto pb-1 md:hidden">
+          {/* Mobile thumbnail strip — horizontal, shown only on mobile */}
+          {gallery.length > 1 && (
+            <div className="flex gap-2.5 overflow-x-auto pb-1 md:hidden -mt-1">
               {gallery.map((src, i) => (
                 <button
                   key={i}
@@ -101,19 +122,11 @@ function ProductPage() {
                     activeImg === i ? "border-ink" : "border-line hover:border-ink/40",
                   )}
                 >
-                  <img
-                    src={src}
-                    alt={`View ${i + 1}`}
-                    className="h-full w-full object-contain"
-                  />
+                  <img src={src} alt={`View ${i + 1}`} className="h-full w-full object-contain" />
                 </button>
               ))}
             </div>
-          </div>
-
-          {/* ── Desktop: thumbnail strip on left of main image ── */}
-          {/* We restructure for md+ to show thumbnails on the left */}
-          {/* This is done via order trick */}
+          )}
 
           {/* ── Details ── */}
           <div className="flex w-full flex-col md:flex-1">
