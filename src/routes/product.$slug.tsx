@@ -97,8 +97,8 @@ function ProductPage() {
       <section className="site-wrap pb-20">
         <h2 className="mb-8 font-display text-2xl text-mist">You may also like</h2>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-          {related.map((p) => (
-            <ProductCard key={p.slug} product={p} />
+          {related.map((p, i) => (
+            <ProductCard key={p.slug} product={p} index={i} />
           ))}
         </div>
       </section>

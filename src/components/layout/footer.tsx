@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
+import { Reveal } from "@/components/motion/reveal";
 
 const shop = [
   { to: "/shop" as const, search: { gender: "men" as const }, label: "Men" },
@@ -25,18 +26,19 @@ const about = [
 export function Footer() {
   return (
     <footer className="bg-navy text-paper">
-      <div className="site-wrap flex flex-col items-center pt-10 pb-6 md:pt-12">
-        <Logo invert className="mb-8 md:mb-10" />
+      <div className="site-wrap flex flex-col items-center pt-8 pb-4 md:pt-12 md:pb-6">
+        <Logo invert className="mb-5 md:mb-10" />
+        <Reveal variant="fade" className="w-full">
 
         {/* Mobile: 2 col, sm: 3 col, md: 5 col */}
-        <div className="grid w-full grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 sm:gap-10 md:grid-cols-5">
+        <div className="grid w-full grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-3 sm:gap-10 md:grid-cols-5">
           <Col title="SHOP">
             {shop.map((l) => (
               <Link
                 key={l.label}
                 to={l.to}
                 search={l.search}
-                className="block py-1.5 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper md:py-1"
+                className="block py-1 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper"
               >
                 {l.label}
               </Link>
@@ -47,7 +49,7 @@ export function Footer() {
               <Link
                 key={l.to}
                 to={l.to}
-                className="block py-1.5 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper md:py-1"
+                className="block py-1 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper"
               >
                 {l.label}
               </Link>
@@ -58,14 +60,14 @@ export function Footer() {
               <Link
                 key={l.to}
                 to={l.to}
-                className="block py-1.5 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper md:py-1"
+                className="block py-1 text-[13px] text-cloud/90 transition-colors duration-150 hover:text-paper"
               >
                 {l.label}
               </Link>
             ))}
           </Col>
           <div>
-            <p className="mb-3 text-[13px] font-medium tracking-wide md:mb-4">Contact</p>
+            <p className="mb-2 text-[13px] font-medium tracking-wide md:mb-4">Contact</p>
             <p className="text-[13px] text-cloud/90">
               Email :{" "}
               <a href="mailto:urbantick@gmail.com" className="break-words hover:text-paper">
@@ -79,24 +81,25 @@ export function Footer() {
               </a>
             </p>
           </div>
-          <div className="col-span-2 flex flex-col items-center border-t border-paper/10 pt-6 sm:col-span-1 sm:items-start sm:border-t-0 sm:pt-0">
-            <p className="mb-3 text-[13px] font-medium tracking-wide md:mb-4">Connect with us</p>
-            <div className="flex items-center gap-2 sm:gap-3">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="flex size-11 items-center justify-center text-paper transition-opacity duration-150 hover:opacity-70">
+          <div className="col-span-2 flex flex-row items-center justify-between border-t border-paper/10 pt-3 sm:col-span-1 sm:flex-col sm:items-start sm:justify-start sm:border-t-0 sm:pt-0">
+            <p className="text-[13px] font-medium tracking-wide sm:mb-3 md:mb-4">Connect with us</p>
+            <div className="flex items-center gap-1 sm:gap-3">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="flex size-10 items-center justify-center text-paper transition-opacity duration-150 hover:opacity-70">
                 <Instagram className="size-4" />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="flex size-11 items-center justify-center text-paper transition-opacity duration-150 hover:opacity-70">
+              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="flex size-10 items-center justify-center text-paper transition-opacity duration-150 hover:opacity-70">
                 <Facebook className="size-4" />
               </a>
-              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X" className="flex size-11 items-center justify-center text-paper transition-opacity duration-150 hover:opacity-70">
+              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X" className="flex size-10 items-center justify-center text-paper transition-opacity duration-150 hover:opacity-70">
                 <XMark />
               </a>
             </div>
           </div>
         </div>
+        </Reveal>
       </div>
       <div className="border-t border-paper/10">
-        <p className="site-wrap py-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-[11px] text-cloud/70 text-center md:text-left">
+        <p className="site-wrap py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-[11px] text-cloud/70 text-center md:text-left">
           © 2024 UrbanTick. All Rights Reserved.
         </p>
       </div>
@@ -107,7 +110,7 @@ export function Footer() {
 function Col({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
-      <p className="mb-3 text-[13px] font-medium tracking-wide md:mb-4">{title}</p>
+      <p className="mb-2 text-[13px] font-medium tracking-wide md:mb-4">{title}</p>
       {children}
     </div>
   );

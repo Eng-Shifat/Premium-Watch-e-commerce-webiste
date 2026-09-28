@@ -5,13 +5,15 @@ import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useHasHydrated } from "@/lib/hydrate";
 import { useWishlistStore } from "@/lib/wishlist-store";
+import { Reveal } from "@/components/motion/reveal";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
   const hydrated = useHasHydrated();
   const wished = useWishlistStore((s) => s.slugs.includes(product.slug));
   const toggle = useWishlistStore((s) => s.toggle);
 
   return (
+    <Reveal delay={(index % 4) * 90}>
     <article className="group relative">
       <Link to="/product/$slug" params={{ slug: product.slug }} className="block">
         <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-soft aspect-[4/5] p-3 sm:p-4 md:p-6">
@@ -47,5 +49,6 @@ export function ProductCard({ product }: { product: Product }) {
         />
       </button>
     </article>
+    </Reveal>
   );
 }

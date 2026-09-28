@@ -4,17 +4,18 @@ import { cn } from "@/lib/utils";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden min-h-[380px] sm:min-h-[460px] md:min-h-[560px]">
+    <section className="relative overflow-hidden">
       <img
         src="/images/hero/hero1.png"
         alt=""
         fetchPriority="high"
-        className="absolute inset-0 w-full h-full object-cover object-[62%_center] sm:object-center"
+        className="hero-zoom absolute inset-0 w-full h-full object-cover object-[62%_center] sm:object-center"
       />
       {/* mobile: soft fade only behind the text (left), watch on the right stays crisp */}
       <div className="absolute inset-0 bg-linear-to-r from-hero/90 from-25% via-hero/45 via-50% to-transparent to-70% sm:hidden" />
 
-      <div className="relative z-10 flex items-center min-h-[380px] sm:min-h-[460px] md:min-h-[560px]">
+      {/* +72px = the transparent header that floats over the hero */}
+      <div className="relative z-10 flex items-center min-h-[452px] pt-[72px] sm:min-h-[532px] md:min-h-[632px]">
         <div className="site-wrap w-full">
           <div className="stagger-in max-w-[340px] sm:max-w-[380px] md:max-w-[420px]">
             <p className="text-[10px] sm:text-[11px] font-semibold tracking-[0.3em] text-rose uppercase mb-3 sm:mb-5">

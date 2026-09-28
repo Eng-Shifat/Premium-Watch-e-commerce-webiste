@@ -89,8 +89,8 @@ function ShopPage() {
           <p className="py-20 text-center text-mist">No watches match those filters.</p>
         ) : (
           <div className="grid grid-cols-2 gap-4 pb-16 md:grid-cols-4 md:gap-6">
-            {list.map((p) => (
-              <ProductCard key={p.slug} product={p} />
+            {list.map((p, i) => (
+              <ProductCard key={p.slug} product={p} index={i} />
             ))}
           </div>
         )}
