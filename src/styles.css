@@ -237,6 +237,216 @@
 }
 
 /* ── Splash screen ── */
+@keyframes splash-icon-in {
+  0%   { opacity: 0; transform: scale(0.8); filter: blur(6px); }
+  100% { opacity: 1; transform: scale(1);   filter: blur(0); }
+}
+
+@keyframes splash-letter-in {
+  0%   { opacity: 0; transform: translateY(10px); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+
+@keyframes splash-line-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes splash-progress {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+.splash-icon {
+  animation: splash-icon-in 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.splash-letter {
+  display: inline-block;
+  opacity: 0;
+  animation: splash-letter-in 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.splash-line {
+  animation: splash-line-in 400ms ease 1000ms both;
+}
+
+.splash-progress {
+  animation: splash-progress 1700ms cubic-bezier(0.4, 0, 0.2, 1) 1100ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.site-wrap {
+  width: min(1180px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .site-wrap {
+    width: min(1180px, calc(100% - 3rem));
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Animations                                                          */
+/* ------------------------------------------------------------------ */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.stagger-in > * {
+  opacity: 0;
+  animation: fade-up 550ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.stagger-in > *:nth-child(1) { animation-delay: 40ms; }
+.stagger-in > *:nth-child(2) { animation-delay: 130ms; }
+.stagger-in > *:nth-child(3) { animation-delay: 220ms; }
+.stagger-in > *:nth-child(4) { animation-delay: 310ms; }
+
+/* ------------------------------------------------------------------ */
+/* Motion system                                                       */
+/* ------------------------------------------------------------------ */
+:root {
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* scroll reveal */
+.reveal {
+  opacity: 0;
+  transition:
+    opacity 700ms var(--ease-premium),
+    transform 700ms var(--ease-premium);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal-up    { transform: translate3d(0, 24px, 0); }
+.reveal-scale { transform: scale(0.97); }
+.reveal-fade  { transform: none; }
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* route change */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-enter { animation: page-in 400ms var(--ease-premium) both; }
+
+/* header slides in */
+@keyframes header-in {
+  from { opacity: 0; transform: translate3d(0, -100%, 0); }
+  to   { opacity: 1; transform: none; }
+}
+.header-in { animation: header-in 700ms var(--ease-premium) both; }
+
+/* hero photo zoom */
+@keyframes hero-zoom {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1); }
+}
+.hero-zoom {
+  transform-origin: 70% 50%;
+  animation: hero-zoom 1800ms var(--ease-premium) both;
+}
+
+/* mobile menu */
+@keyframes menu-in {
+  from { opacity: 0; transform: translate3d(0, -8px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+.menu-panel { animation: menu-in 260ms var(--ease-premium) both; }
+.menu-item {
+  opacity: 0;
+  animation: fade-up 420ms var(--ease-premium) forwards;
+}
+
+/* cart/wishlist counter */
+@keyframes badge-pop {
+  0%   { transform: scale(0.4); }
+  60%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+.badge-pop { animation: badge-pop 350ms var(--ease-premium) both; }
+
+/* ------------------------------------------------------------------ */
+/* Sidebar card                                                        */
+/* ------------------------------------------------------------------ */
+.sidebar-card {
+  animation: fade-in 400ms var(--ease-premium) both;
+}
+
+/* ------------------------------------------------------------------ */
+/* Shop product card hover lift                                        */
+/* ------------------------------------------------------------------ */
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.shop-card {
+  animation: card-enter 500ms var(--ease-premium) both;
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion                                                      */
+/* ------------------------------------------------------------------ */
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+/* ── Logo text animation ── */
+@keyframes logo-text-in {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+    letter-spacing: 0.08em;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    letter-spacing: 0.22em;
+  }
+}
+
+.logo-text {
+  animation: logo-text-in 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Splash screen ── */
 @keyframes splash-logo-in {
   0%   { opacity: 0; transform: scale(0.82) translateY(10px); filter: blur(8px); }
   60%  { opacity: 1; transform: scale(1.03) translateY(0);    filter: blur(0); }
@@ -260,4 +470,5 @@
   .reveal { opacity: 1; transform: none; }
   .shop-card { animation: none; opacity: 1; }
   .sidebar-card { animation: none; }
+  .splash-letter, .splash-icon, .splash-line, .splash-progress { animation: none; opacity: 1; transform: none; filter: none; }
 }

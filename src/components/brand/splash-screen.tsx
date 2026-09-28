@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 
+const LETTERS = "URBANTICK".split("");
+
 export function SplashScreen() {
   const [phase, setPhase] = useState<"visible" | "fadeout" | "done">("visible");
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("fadeout"), 2200);
-    const t2 = setTimeout(() => setPhase("done"), 2600);
+    const t1 = setTimeout(() => setPhase("fadeout"), 3000);
+    const t2 = setTimeout(() => setPhase("done"), 3400);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
@@ -21,9 +23,9 @@ export function SplashScreen() {
         pointerEvents: phase === "fadeout" ? "none" : "auto",
       }}
     >
-      {/* Animated logo */}
-      <div className="splash-logo flex items-center gap-3 tracking-[0.22em]">
-        <svg viewBox="0 0 32 32" className="size-12 text-ink" aria-hidden="true" fill="none">
+      {/* Logo lockup: icon + (letters / progress line) */}
+      <div className="flex items-center gap-3">
+        <svg viewBox="0 0 32 32" className="splash-icon size-12 text-ink" aria-hidden="true" fill="none">
           <circle cx="16" cy="16" r="13.5" stroke="currentColor" strokeWidth="1" opacity="0.35" />
           <circle cx="16" cy="16" r="10.5" stroke="currentColor" strokeWidth="1.4" />
           <circle cx="16" cy="16" r="1.15" fill="currentColor" />
@@ -38,12 +40,29 @@ export function SplashScreen() {
               from="0 16 16" to="360 16 16" dur="18s" repeatCount="indefinite" />
           </line>
         </svg>
-        <span className="logo-text text-[22px] font-medium text-ink">URBANTICK</span>
-      </div>
 
-      {/* Progress line */}
-      <div className="splash-line mt-10 h-px w-28 overflow-hidden rounded-full bg-line">
-        <div className="splash-progress h-full bg-ink" />
+        <div className="flex flex-col">
+          {/* Letters appear one by one */}
+          <div className="text-[22px] font-medium text-ink" style={{ letterSpacing: 0 }}>
+            {LETTERS.map((ch, i) => (
+              <span
+                key={i}
+                className="splash-letter"
+                style={{
+                  animationDelay: `${300 + i * 110}ms`,
+                  marginRight: i === LETTERS.length - 1 ? 0 : "0.22em",
+                }}
+              >
+                {ch}
+              </span>
+            ))}
+          </div>
+
+          {/* Progress line, directly under the text */}
+          <div className="splash-line mt-3 h-px w-full overflow-hidden rounded-full bg-line">
+            <div className="splash-progress h-full bg-ink" />
+          </div>
+        </div>
       </div>
     </div>
   );
