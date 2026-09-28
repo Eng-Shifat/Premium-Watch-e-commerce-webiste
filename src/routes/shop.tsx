@@ -124,41 +124,105 @@ function ShopPage() {
     setSearch({ q: query.trim() || undefined });
   }
 
+  const filterContent = (
+    <>
+      <SidebarSection title="Shop For">
+        {GENDER_OPTIONS.map((g) => (
+          <CheckRow
+            key={g.value}
+            label={g.label}
+            checked={genders.includes(g.value)}
+            onChange={() => setSearch({ gender: joinList(toggle(genders, g.value)) })}
+          />
+        ))}
+      </SidebarSection>
+      <SidebarSection title="Brand">
+        {BRANDS.map((b) => (
+          <CheckRow
+            key={b}
+            label={b}
+            checked={brands.includes(b)}
+            onChange={() => setSearch({ brand: joinList(toggle(brands, b)) })}
+          />
+        ))}
+      </SidebarSection>
+      <SidebarSection title="Price Range" last>
+        <div className="flex items-end gap-2">
+          <AmountField label="Min" value={minText} onChange={(v) => setMinText(digitsOnly(v))} placeholder="0" />
+          <span aria-hidden="true" className="mb-[14px] h-px w-4 shrink-0 bg-ink/40" />
+          <AmountField label="Max" value={maxText} onChange={(v) => setMaxText(digitsOnly(v))} placeholder="Any" />
+        </div>
+      </SidebarSection>
+    </>
+  );
+
   return (
     <main className="bg-paper text-ink">
-      <div className="site-wrap pt-6 pb-16 md:pt-8 md:pb-20">
-        {/* mobile filters toggle */}
-        <button
-          type="button"
-          onClick={() => setFiltersOpen((v) => !v)}
-          aria-expanded={filtersOpen}
-          className="mb-6 inline-flex h-10 items-center gap-2 rounded-full border border-ink/30 bg-soft px-5 text-[13px] font-medium tracking-wide transition-all duration-200 hover:border-ink hover:bg-ink hover:text-paper lg:hidden"
-        >
-          <SlidersHorizontal className="size-4" />
-          Filters
-          {activeCount > 0 ? (
-            <span className="flex size-5 items-center justify-center rounded-full bg-ink text-[11px] text-paper tabular-nums">
-              {activeCount}
-            </span>
-          ) : null}
-        </button>
 
+      {/* ── Mobile bottom sheet overlay ── */}
+      {filtersOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-ink/40 backdrop-blur-[2px]"
+            onClick={() => setFiltersOpen(false)}
+          />
+          {/* Sheet */}
+          <div className="absolute bottom-0 left-0 right-0 rounded-t-3xl bg-paper shadow-[0_-8px_40px_rgba(0,0,0,0.18)] animate-[sheet-up_300ms_cubic-bezier(0.22,1,0.36,1)_both]">
+            {/* Handle */}
+            <div className="flex justify-center pt-3 pb-1">
+              <div className="h-1 w-10 rounded-full bg-line" />
+            </div>
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-3 border-b border-line">
+              <h2 className="text-[15px] font-semibold text-ink">Filters</h2>
+              <div className="flex items-center gap-3">
+                {anyFilter && (
+                  <button
+                    type="button"
+                    onClick={clearAll}
+                    className="text-[12px] font-medium text-ash underline underline-offset-4"
+                  >
+                    Clear all
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setFiltersOpen(false)}
+                  className="flex size-8 items-center justify-center rounded-full bg-soft text-ink/60 hover:bg-line"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+            {/* Content */}
+            <div className="overflow-y-auto px-5 pb-8 pt-2 max-h-[70vh]">
+              {filterContent}
+            </div>
+            {/* Apply button */}
+            <div className="px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-2 border-t border-line">
+              <button
+                type="button"
+                onClick={() => setFiltersOpen(false)}
+                className="w-full h-12 rounded-full bg-ink text-paper text-[14px] font-semibold tracking-wide transition-all active:scale-95"
+              >
+                {list.length > 0 ? `Show ${list.length} Results` : "No Results"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="site-wrap pt-6 pb-16 md:pt-8 md:pb-20">
         <div className="lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-0">
-          {/* ── Sidebar ── */}
-          <aside
-            className={cn(
-              "mb-8 lg:mb-0 lg:block",
-              filtersOpen ? "block" : "hidden",
-            )}
-          >
-            {/* Sidebar inner card */}
+          {/* ── Desktop Sidebar ── */}
+          <aside className="hidden lg:block">
             <div className="sidebar-card rounded-2xl border border-line bg-soft/60 px-6 py-7 lg:sticky lg:top-[88px]">
-              {/* Header */}
               <div className="mb-6 flex items-center justify-between">
                 <h2 className="text-[15px] font-semibold uppercase tracking-[0.12em] text-ink/60">
                   Filters
                 </h2>
-                {anyFilter ? (
+                {anyFilter && (
                   <button
                     type="button"
                     onClick={clearAll}
@@ -166,51 +230,9 @@ function ShopPage() {
                   >
                     Clear all
                   </button>
-                ) : null}
+                )}
               </div>
-
-              {/* Shop For */}
-              <SidebarSection title="Shop For">
-                {GENDER_OPTIONS.map((g) => (
-                  <CheckRow
-                    key={g.value}
-                    label={g.label}
-                    checked={genders.includes(g.value)}
-                    onChange={() => setSearch({ gender: joinList(toggle(genders, g.value)) })}
-                  />
-                ))}
-              </SidebarSection>
-
-              {/* Brand */}
-              <SidebarSection title="Brand">
-                {BRANDS.map((b) => (
-                  <CheckRow
-                    key={b}
-                    label={b}
-                    checked={brands.includes(b)}
-                    onChange={() => setSearch({ brand: joinList(toggle(brands, b)) })}
-                  />
-                ))}
-              </SidebarSection>
-
-              {/* Price */}
-              <SidebarSection title="Price Range" last>
-                <div className="flex items-end gap-2">
-                  <AmountField
-                    label="Min"
-                    value={minText}
-                    onChange={(v) => setMinText(digitsOnly(v))}
-                    placeholder="0"
-                  />
-                  <span aria-hidden="true" className="mb-[14px] h-px w-4 shrink-0 bg-ink/40" />
-                  <AmountField
-                    label="Max"
-                    value={maxText}
-                    onChange={(v) => setMaxText(digitsOnly(v))}
-                    placeholder="Any"
-                  />
-                </div>
-              </SidebarSection>
+              {filterContent}
             </div>
           </aside>
 
@@ -220,10 +242,26 @@ function ShopPage() {
               <h1 className="text-[26px] font-medium tracking-tight text-ink/90 md:text-[30px]">
                 Our Collection
               </h1>
-              <SortMenu
-                value={sort}
-                onChange={(v) => setSearch({ sort: v === "featured" ? undefined : v })}
-              />
+              <div className="flex items-center gap-2">
+                {/* Mobile filter button */}
+                <button
+                  type="button"
+                  onClick={() => setFiltersOpen(true)}
+                  className="inline-flex h-9 items-center gap-1.5 rounded-full border border-ink/20 bg-soft px-4 text-[12px] font-medium tracking-wide transition-all hover:border-ink/50 lg:hidden"
+                >
+                  <SlidersHorizontal className="size-3.5" />
+                  Filters
+                  {activeCount > 0 && (
+                    <span className="flex size-4 items-center justify-center rounded-full bg-ink text-[10px] text-paper">
+                      {activeCount}
+                    </span>
+                  )}
+                </button>
+                <SortMenu
+                  value={sort}
+                  onChange={(v) => setSearch({ sort: v === "featured" ? undefined : v })}
+                />
+              </div>
             </div>
 
             <form role="search" onSubmit={onSearchSubmit} className="relative mt-4 mb-2">
