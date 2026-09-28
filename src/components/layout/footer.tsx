@@ -99,9 +99,10 @@ export function Footer() {
         </Reveal>
       </div>
       <div className="border-t border-paper/10">
-        <p className="site-wrap py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-[11px] text-cloud/70 text-center md:text-left">
-          © 2024 UrbanTick. All Rights Reserved.
-        </p>
+        <div className="site-wrap flex flex-col items-center justify-between gap-1 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-[11px] text-cloud/70 sm:flex-row">
+          <p>© 2024 UrbanTick. All Rights Reserved.</p>
+          <p>Developed by <span className="text-cloud/90 font-medium">Yeasin Kabir Shifat</span></p>
+        </div>
       </div>
     </footer>
   );
