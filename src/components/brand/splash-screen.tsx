@@ -4,10 +4,8 @@ export function SplashScreen() {
   const [phase, setPhase] = useState<"visible" | "fadeout" | "done">("visible");
 
   useEffect(() => {
-    // After 2s start fading out
-    const t1 = setTimeout(() => setPhase("fadeout"), 2000);
-    // After fade (400ms) mark done so it unmounts
-    const t2 = setTimeout(() => setPhase("done"), 2400);
+    const t1 = setTimeout(() => setPhase("fadeout"), 2200);
+    const t2 = setTimeout(() => setPhase("done"), 2600);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
@@ -23,18 +21,29 @@ export function SplashScreen() {
         pointerEvents: phase === "fadeout" ? "none" : "auto",
       }}
     >
-      {/* Logo image with reveal animation */}
-      <div className="splash-logo">
-        <img
-          src="/logo.png"
-          alt="UrbanTick"
-          className="h-12 w-auto sm:h-14"
-          draggable={false}
-        />
+      {/* Animated logo */}
+      <div className="splash-logo flex items-center gap-3 tracking-[0.22em]">
+        <svg viewBox="0 0 32 32" className="size-12 text-ink" aria-hidden="true" fill="none">
+          <circle cx="16" cy="16" r="12.25" stroke="currentColor" strokeWidth="1.4" />
+          <circle cx="16" cy="16" r="1.15" fill="currentColor" />
+          {/* Minute hand */}
+          <line x1="16" y1="16" x2="16" y2="6.5"
+            stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
+            <animateTransform attributeName="transform" type="rotate"
+              from="0 16 16" to="360 16 16" dur="6s" repeatCount="indefinite" />
+          </line>
+          {/* Hour hand */}
+          <line x1="16" y1="16" x2="21" y2="19.5"
+            stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
+            <animateTransform attributeName="transform" type="rotate"
+              from="0 16 16" to="360 16 16" dur="72s" repeatCount="indefinite" />
+          </line>
+        </svg>
+        <span className="text-[22px] font-medium text-ink">URBANTICK</span>
       </div>
 
-      {/* Thin progress line */}
-      <div className="splash-line mt-8 h-px w-24 overflow-hidden rounded-full bg-line">
+      {/* Progress line */}
+      <div className="splash-line mt-10 h-px w-28 overflow-hidden rounded-full bg-line">
         <div className="splash-progress h-full bg-ink" />
       </div>
     </div>
