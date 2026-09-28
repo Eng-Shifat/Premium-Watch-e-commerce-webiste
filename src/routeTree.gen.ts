@@ -16,13 +16,16 @@ import { Route as CartRouteImport } from './routes/cart'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ComplaintRouteImport } from './routes/complaint'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as OrderStatusRouteImport } from './routes/order-status'
+import { Route as PaymentRouteImport } from './routes/payment'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ShopRouteImport } from './routes/shop'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as TermsRouteImport } from './routes/terms'
-import { Route as PaymentRouteImport } from './routes/payment'
+import { Route as VerifyOtpRouteImport } from './routes/verify-otp'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 
@@ -61,9 +64,19 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OrderStatusRoute = OrderStatusRouteImport.update({
   id: '/order-status',
   path: '/order-status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentRoute = PaymentRouteImport.update({
+  id: '/payment',
+  path: '/payment',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -81,6 +94,11 @@ const ShopRoute = ShopRouteImport.update({
   path: '/shop',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
@@ -91,9 +109,9 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PaymentRoute = PaymentRouteImport.update({
-  id: '/payment',
-  path: '/payment',
+const VerifyOtpRoute = VerifyOtpRouteImport.update({
+  id: '/verify-otp',
+  path: '/verify-otp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WishlistRoute = WishlistRouteImport.update({
@@ -115,13 +133,16 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/complaint': typeof ComplaintRoute
   '/contact': typeof ContactRoute
+  '/login': typeof LoginRoute
   '/order-status': typeof OrderStatusRoute
+  '/payment': typeof PaymentRoute
   '/privacy': typeof PrivacyRoute
   '/shipping': typeof ShippingRoute
   '/shop': typeof ShopRoute
+  '/signup': typeof SignupRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
-  '/payment': typeof PaymentRoute
+  '/verify-otp': typeof VerifyOtpRoute
   '/wishlist': typeof WishlistRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -133,13 +154,16 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/complaint': typeof ComplaintRoute
   '/contact': typeof ContactRoute
+  '/login': typeof LoginRoute
   '/order-status': typeof OrderStatusRoute
+  '/payment': typeof PaymentRoute
   '/privacy': typeof PrivacyRoute
   '/shipping': typeof ShippingRoute
   '/shop': typeof ShopRoute
+  '/signup': typeof SignupRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
-  '/payment': typeof PaymentRoute
+  '/verify-otp': typeof VerifyOtpRoute
   '/wishlist': typeof WishlistRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -152,13 +176,16 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/complaint': typeof ComplaintRoute
   '/contact': typeof ContactRoute
+  '/login': typeof LoginRoute
   '/order-status': typeof OrderStatusRoute
+  '/payment': typeof PaymentRoute
   '/privacy': typeof PrivacyRoute
   '/shipping': typeof ShippingRoute
   '/shop': typeof ShopRoute
+  '/signup': typeof SignupRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
-  '/payment': typeof PaymentRoute
+  '/verify-otp': typeof VerifyOtpRoute
   '/wishlist': typeof WishlistRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -172,13 +199,16 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/complaint'
     | '/contact'
+    | '/login'
     | '/order-status'
+    | '/payment'
     | '/privacy'
     | '/shipping'
     | '/shop'
+    | '/signup'
     | '/support'
     | '/terms'
-    | '/payment'
+    | '/verify-otp'
     | '/wishlist'
     | '/product/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -190,13 +220,16 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/complaint'
     | '/contact'
+    | '/login'
     | '/order-status'
+    | '/payment'
     | '/privacy'
     | '/shipping'
     | '/shop'
+    | '/signup'
     | '/support'
     | '/terms'
-    | '/payment'
+    | '/verify-otp'
     | '/wishlist'
     | '/product/$slug'
   id:
@@ -208,13 +241,16 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/complaint'
     | '/contact'
+    | '/login'
     | '/order-status'
+    | '/payment'
     | '/privacy'
     | '/shipping'
     | '/shop'
+    | '/signup'
     | '/support'
     | '/terms'
-    | '/payment'
+    | '/verify-otp'
     | '/wishlist'
     | '/product/$slug'
   fileRoutesById: FileRoutesById
@@ -227,13 +263,16 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ComplaintRoute: typeof ComplaintRoute
   ContactRoute: typeof ContactRoute
+  LoginRoute: typeof LoginRoute
   OrderStatusRoute: typeof OrderStatusRoute
+  PaymentRoute: typeof PaymentRoute
   PrivacyRoute: typeof PrivacyRoute
   ShippingRoute: typeof ShippingRoute
   ShopRoute: typeof ShopRoute
+  SignupRoute: typeof SignupRoute
   SupportRoute: typeof SupportRoute
   TermsRoute: typeof TermsRoute
-  PaymentRoute: typeof PaymentRoute
+  VerifyOtpRoute: typeof VerifyOtpRoute
   WishlistRoute: typeof WishlistRoute
   ProductSlugRoute: typeof ProductSlugRoute
 }
@@ -289,11 +328,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/order-status': {
       id: '/order-status'
       path: '/order-status'
       fullPath: '/order-status'
       preLoaderRoute: typeof OrderStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment': {
+      id: '/payment'
+      path: '/payment'
+      fullPath: '/payment'
+      preLoaderRoute: typeof PaymentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -317,6 +370,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShopRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/support': {
       id: '/support'
       path: '/support'
@@ -331,11 +391,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/payment': {
-      id: '/payment'
-      path: '/payment'
-      fullPath: '/payment'
-      preLoaderRoute: typeof PaymentRouteImport
+    '/verify-otp': {
+      id: '/verify-otp'
+      path: '/verify-otp'
+      fullPath: '/verify-otp'
+      preLoaderRoute: typeof VerifyOtpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/wishlist': {
@@ -363,13 +423,16 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ComplaintRoute: ComplaintRoute,
   ContactRoute: ContactRoute,
+  LoginRoute: LoginRoute,
   OrderStatusRoute: OrderStatusRoute,
+  PaymentRoute: PaymentRoute,
   PrivacyRoute: PrivacyRoute,
   ShippingRoute: ShippingRoute,
   ShopRoute: ShopRoute,
+  SignupRoute: SignupRoute,
   SupportRoute: SupportRoute,
   TermsRoute: TermsRoute,
-  PaymentRoute: PaymentRoute,
+  VerifyOtpRoute: VerifyOtpRoute,
   WishlistRoute: WishlistRoute,
   ProductSlugRoute: ProductSlugRoute,
 }

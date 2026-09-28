@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useHasHydrated } from "@/lib/hydrate";
 import { cartCount, useCartStore } from "@/lib/cart-store";
 import { useWishlistStore } from "@/lib/wishlist-store";
+import { useLocalUser } from "@/lib/local-auth";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -20,6 +21,7 @@ export function Header() {
   const hydrated = useHasHydrated();
   const bag = useCartStore((s) => cartCount(s.lines));
   const wishes = useWishlistStore((s) => s.slugs.length);
+  const user = useLocalUser();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -100,7 +102,7 @@ export function Header() {
             <Heart className="size-[18px]" />
             {hydrated && wishes > 0 ? <Count n={wishes} /> : null}
           </IconLink>
-          <IconLink to="/account" label="Account">
+          <IconLink to={hydrated && user ? "/account" : "/login"} label={hydrated && user ? "Account" : "Login"}>
             <User className="size-[18px]" />
           </IconLink>
           <IconLink to="/cart" label="Cart">
@@ -136,7 +138,7 @@ function IconLink({
   label,
   children,
 }: {
-  to: "/wishlist" | "/account" | "/cart";
+  to: "/wishlist" | "/account" | "/cart" | "/login";
   label: string;
   children: ReactNode;
 }) {
