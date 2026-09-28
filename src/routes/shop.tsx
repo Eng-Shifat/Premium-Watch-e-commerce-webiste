@@ -34,7 +34,6 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: "price-desc", label: "Price: high to low" },
 ];
 
-// brands come straight from the product data (src/data/products.ts)
 const BRANDS = Array.from(new Set(products.map((p) => p.brand)));
 
 const digitsOnly = (v: string) => v.replace(/\D/g, "");
@@ -58,7 +57,6 @@ function ShopPage() {
   const brands = splitList(search.brand);
   const sort: SortKey = search.sort ?? "featured";
 
-  // ---- text inputs keep local state and commit to the URL after a short pause
   const [query, setQuery] = useState(search.q ?? "");
   const [minText, setMinText] = useState(search.min != null ? String(search.min) : "");
   const [maxText, setMaxText] = useState(search.max != null ? String(search.max) : "");
@@ -81,7 +79,6 @@ function ShopPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minText, maxText]);
 
-  // ---- filtering + sorting
   const list = useMemo(() => {
     const q = (search.q ?? "").toLowerCase();
     return products
@@ -101,7 +98,6 @@ function ShopPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search.gender, search.brand, search.q, search.min, search.max, sort]);
 
-  // ---- "Load more"
   const [limit, setLimit] = useState(PAGE_SIZE);
   const filterKey = `${search.gender}|${search.brand}|${search.q}|${search.min}|${search.max}|${sort}`;
   useEffect(() => setLimit(PAGE_SIZE), [filterKey]);
@@ -130,13 +126,13 @@ function ShopPage() {
 
   return (
     <main className="bg-paper text-ink">
-      <div className="site-wrap py-8 md:py-12 lg:py-14">
-        {/* mobile / tablet: filters live behind a button */}
+      <div className="site-wrap pt-6 pb-16 md:pt-8 md:pb-20">
+        {/* mobile filters toggle */}
         <button
           type="button"
           onClick={() => setFiltersOpen((v) => !v)}
           aria-expanded={filtersOpen}
-          className="mb-6 inline-flex h-10 items-center gap-2 rounded-full border border-ink px-4 text-[13px] lg:hidden"
+          className="mb-6 inline-flex h-10 items-center gap-2 rounded-full border border-ink/30 bg-soft px-5 text-[13px] font-medium tracking-wide transition-all duration-200 hover:border-ink hover:bg-ink hover:text-paper lg:hidden"
         >
           <SlidersHorizontal className="size-4" />
           Filters
@@ -147,91 +143,106 @@ function ShopPage() {
           ) : null}
         </button>
 
-        <div className="lg:grid lg:grid-cols-[250px_minmax(0,1fr)]">
-          {/* ------------------------------ sidebar ------------------------------ */}
-          <aside className={cn("mb-8 lg:mb-0 lg:block lg:pr-9", filtersOpen ? "block" : "hidden")}>
-            <div className="flex items-end justify-between border-b border-ink/60 pb-3">
-              <h2 className="text-xl text-ink/90">Categories</h2>
-              {anyFilter ? (
-                <button
-                  type="button"
-                  onClick={clearAll}
-                  className="text-[12px] text-ash underline underline-offset-4 hover:text-ink"
-                >
-                  Clear all
-                </button>
-              ) : null}
-            </div>
-
-            <FilterGroup title="Shop For">
-              {GENDER_OPTIONS.map((g) => (
-                <CheckRow
-                  key={g.value}
-                  label={g.label}
-                  checked={genders.includes(g.value)}
-                  onChange={() => setSearch({ gender: joinList(toggle(genders, g.value)) })}
-                />
-              ))}
-            </FilterGroup>
-
-            <FilterGroup title="BRAND">
-              {BRANDS.map((b) => (
-                <CheckRow
-                  key={b}
-                  label={b}
-                  checked={brands.includes(b)}
-                  onChange={() => setSearch({ brand: joinList(toggle(brands, b)) })}
-                />
-              ))}
-            </FilterGroup>
-
-            <FilterGroup title="Price" last>
-              <div className="flex items-end">
-                <AmountField
-                  label="Min"
-                  value={minText}
-                  onChange={(v) => setMinText(digitsOnly(v))}
-                  placeholder="0"
-                />
-                <span aria-hidden="true" className="mx-0.5 mb-[15px] h-px w-5 bg-ink/70" />
-                <AmountField
-                  label="Max"
-                  value={maxText}
-                  onChange={(v) => setMaxText(digitsOnly(v))}
-                  placeholder="Any"
-                />
+        <div className="lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-0">
+          {/* ── Sidebar ── */}
+          <aside
+            className={cn(
+              "mb-8 lg:mb-0 lg:block",
+              filtersOpen ? "block" : "hidden",
+            )}
+          >
+            {/* Sidebar inner card */}
+            <div className="sidebar-card rounded-2xl border border-line bg-soft/60 px-6 py-7 lg:sticky lg:top-[88px]">
+              {/* Header */}
+              <div className="mb-6 flex items-center justify-between">
+                <h2 className="text-[15px] font-semibold uppercase tracking-[0.12em] text-ink/60">
+                  Filters
+                </h2>
+                {anyFilter ? (
+                  <button
+                    type="button"
+                    onClick={clearAll}
+                    className="text-[11px] font-medium uppercase tracking-wider text-ash underline underline-offset-4 transition-colors hover:text-ink"
+                  >
+                    Clear all
+                  </button>
+                ) : null}
               </div>
-            </FilterGroup>
+
+              {/* Shop For */}
+              <SidebarSection title="Shop For">
+                {GENDER_OPTIONS.map((g) => (
+                  <CheckRow
+                    key={g.value}
+                    label={g.label}
+                    checked={genders.includes(g.value)}
+                    onChange={() => setSearch({ gender: joinList(toggle(genders, g.value)) })}
+                  />
+                ))}
+              </SidebarSection>
+
+              {/* Brand */}
+              <SidebarSection title="Brand">
+                {BRANDS.map((b) => (
+                  <CheckRow
+                    key={b}
+                    label={b}
+                    checked={brands.includes(b)}
+                    onChange={() => setSearch({ brand: joinList(toggle(brands, b)) })}
+                  />
+                ))}
+              </SidebarSection>
+
+              {/* Price */}
+              <SidebarSection title="Price Range" last>
+                <div className="flex items-end gap-2">
+                  <AmountField
+                    label="Min"
+                    value={minText}
+                    onChange={(v) => setMinText(digitsOnly(v))}
+                    placeholder="0"
+                  />
+                  <span aria-hidden="true" className="mb-[14px] h-px w-4 shrink-0 bg-ink/40" />
+                  <AmountField
+                    label="Max"
+                    value={maxText}
+                    onChange={(v) => setMaxText(digitsOnly(v))}
+                    placeholder="Any"
+                  />
+                </div>
+              </SidebarSection>
+            </div>
           </aside>
 
-          {/* ------------------------------- results ------------------------------ */}
-          <section className="min-w-0 lg:border-l lg:border-ink/70 lg:pl-10">
-            <div className="lg:w-[92%]">
-              <div className="flex items-center justify-between gap-4">
-                <h1 className="text-[26px] font-medium tracking-tight text-ink/90 md:text-[30px]">
-                  Our Collection
-                </h1>
-                <SortMenu value={sort} onChange={(v) => setSearch({ sort: v === "featured" ? undefined : v })} />
-              </div>
-
-              <form role="search" onSubmit={onSearchSubmit} className="relative mt-5">
-                <input
-                  type="search"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search An Item"
-                  aria-label="Search watches"
-                  className="h-[46px] w-full appearance-none rounded-full border border-cloud bg-paper pr-16 pl-5 text-[13px] text-ink outline-none transition-colors duration-200 placeholder:text-ash focus:border-ink [&::-webkit-search-cancel-button]:appearance-none"
-                />
-                <button
-                  type="submit"
-                  aria-label="Search"
-                  className="absolute top-1/2 right-1.5 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-mist text-paper transition-colors duration-200 hover:bg-ash active:scale-95"
-                >
-                  <Search className="size-[18px]" />
-                </button>
-              </form>
+          {/* ── Results ── */}
+          <section className="min-w-0 lg:border-l lg:border-line lg:pl-10">
+            <div className="flex items-center justify-between gap-4">
+              <h1 className="text-[26px] font-medium tracking-tight text-ink/90 md:text-[30px]">
+                Our Collection
+              </h1>
+              <SortMenu
+                value={sort}
+                onChange={(v) => setSearch({ sort: v === "featured" ? undefined : v })}
+              />
             </div>
+
+            <form role="search" onSubmit={onSearchSubmit} className="relative mt-4 mb-2">
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search An Item"
+                aria-label="Search watches"
+                className="h-[48px] w-full appearance-none rounded-full border border-cloud bg-soft/50 pr-16 pl-6 text-[13px] text-ink outline-none transition-all duration-200 placeholder:text-ash/60 focus:border-ink/50 focus:bg-paper focus:shadow-[0_0_0_3px_rgba(22,22,22,0.06)] [&::-webkit-search-cancel-button]:appearance-none"
+              />
+              <button
+                type="submit"
+                aria-label="Search"
+                className="absolute top-1/2 right-1.5 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink text-paper transition-all duration-200 hover:bg-ink/80 active:scale-95"
+              >
+                <Search className="size-[16px]" />
+              </button>
+            </form>
 
             {list.length === 0 ? (
               <div className="py-24 text-center">
@@ -246,22 +257,22 @@ function ShopPage() {
               </div>
             ) : (
               <>
-                <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-9 sm:grid-cols-3 sm:gap-x-6 lg:mt-10 lg:gap-x-8 lg:gap-y-14">
+                <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-5 lg:mt-8 lg:gap-x-6 lg:gap-y-10">
                   {visible.map((p, i) => (
                     <ProductCard key={p.slug} product={p} index={i} variant="inline" />
                   ))}
                 </div>
 
                 <div className="mt-14 flex flex-col items-center pb-4 lg:mt-16">
-                  <p className="text-[13px] text-ash tabular-nums">
-                    Showing 1–{visible.length} of {list.length} item(s)
+                  <p className="text-[12px] uppercase tracking-widest text-ash/70 tabular-nums">
+                    Showing {visible.length} of {list.length} items
                   </p>
-                  <div className="mt-3 h-[2px] w-full max-w-[410px] bg-mist/70" />
+                  <div className="mt-3 h-px w-full max-w-[320px] bg-gradient-to-r from-transparent via-line to-transparent" />
                   {hasMore ? (
                     <button
                       type="button"
                       onClick={() => setLimit((n) => n + PAGE_SIZE)}
-                      className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-ink px-7 text-[14px] font-medium text-paper transition-[transform,background-color] duration-150 hover:bg-ink/85 active:scale-95"
+                      className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-ink px-8 text-[13px] font-medium tracking-wide text-paper transition-all duration-200 hover:bg-ink/85 hover:shadow-[0_8px_24px_rgba(0,0,0,0.18)] active:scale-95"
                     >
                       Load More
                       <ChevronRight className="size-4" />
@@ -277,11 +288,8 @@ function ShopPage() {
   );
 }
 
-/* ----------------------------------------------------------------------------
- * small building blocks
- * -------------------------------------------------------------------------- */
-
-function FilterGroup({
+/* ── Sidebar Section ── */
+function SidebarSection({
   title,
   last = false,
   children,
@@ -291,9 +299,11 @@ function FilterGroup({
   children: React.ReactNode;
 }) {
   return (
-    <div className={cn("border-b border-ink/60 py-7 pl-2 lg:pl-9", last && "pb-9")}>
-      <h3 className="mb-4 text-[16px] font-semibold text-ink">{title}</h3>
-      <div className="space-y-1">{children}</div>
+    <div className={cn("border-t border-line/80 pt-5", last ? "pb-0" : "pb-5")}>
+      <h3 className="mb-3.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-ash">
+        {title}
+      </h3>
+      <div className="space-y-0.5">{children}</div>
     </div>
   );
 }
@@ -308,12 +318,37 @@ function CheckRow({
   onChange: () => void;
 }) {
   return (
-    <label className="flex cursor-pointer items-center gap-3 py-1.5 text-[14px] text-ink/90 select-none">
+    <label
+      className={cn(
+        "group flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 text-[13px] select-none transition-colors duration-150",
+        checked ? "bg-ink/[0.06] text-ink" : "text-ink/70 hover:bg-ink/[0.04] hover:text-ink",
+      )}
+    >
+      <span
+        className={cn(
+          "flex size-[15px] shrink-0 items-center justify-center rounded border transition-all duration-200",
+          checked
+            ? "border-ink bg-ink"
+            : "border-cloud bg-paper group-hover:border-ink/40",
+        )}
+      >
+        {checked && (
+          <svg
+            className="size-2.5 text-paper"
+            fill="none"
+            viewBox="0 0 10 8"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path d="M1 4l3 3 5-6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
+      </span>
       <input
         type="checkbox"
         checked={checked}
         onChange={onChange}
-        className="size-[15px] cursor-pointer accent-ink"
+        className="sr-only"
       />
       {label}
     </label>
@@ -332,17 +367,19 @@ function AmountField({
   placeholder: string;
 }) {
   return (
-    <label className="block">
-      <span className="mb-1 block pl-2 text-[12px] text-ash">{label}</span>
-      <span className="flex h-8 w-[84px] items-center rounded-2xl border border-ink px-2.5 text-[12px] text-ink focus-within:border-2">
-        <span className="mr-0.5">₹</span>
+    <label className="block flex-1">
+      <span className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-ash/70">
+        {label}
+      </span>
+      <span className="flex h-9 w-full items-center rounded-xl border border-line bg-paper px-3 text-[12px] text-ink transition-colors focus-within:border-ink/40 focus-within:shadow-[0_0_0_2px_rgba(22,22,22,0.06)]">
+        <span className="mr-0.5 text-ash">₹</span>
         <input
           inputMode="numeric"
           value={formatAmount(value)}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           aria-label={`${label} price`}
-          className="w-full min-w-0 bg-transparent tabular-nums outline-none placeholder:text-ash"
+          className="w-full min-w-0 bg-transparent tabular-nums outline-none placeholder:text-ash/50"
         />
       </span>
     </label>
@@ -355,27 +392,27 @@ function SortMenu({ value, onChange }: { value: SortKey; onChange: (v: SortKey) 
       <DropdownMenu.Trigger asChild>
         <button
           type="button"
-          className="group inline-flex h-9 shrink-0 items-center gap-2 rounded-full bg-ink pr-3.5 pl-5 text-[13px] font-medium text-paper transition-transform duration-150 hover:bg-ink/85 active:scale-95"
+          className="group inline-flex h-9 shrink-0 items-center gap-2 rounded-full bg-ink pr-4 pl-5 text-[12px] font-medium tracking-wide text-paper transition-all duration-150 hover:bg-ink/85 hover:shadow-[0_4px_14px_rgba(0,0,0,0.2)] active:scale-95"
         >
           Sort
-          <ChevronDown className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+          <ChevronDown className="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           align="end"
           sideOffset={8}
-          className="menu-panel z-50 min-w-[200px] rounded-xl border border-line bg-paper p-1.5 text-ink shadow-[0_12px_40px_rgba(0,0,0,0.12)]"
+          className="menu-panel z-50 min-w-[200px] rounded-2xl border border-line bg-paper p-1.5 text-ink shadow-[0_16px_48px_rgba(0,0,0,0.12)]"
         >
           <DropdownMenu.RadioGroup value={value} onValueChange={(v) => onChange(v as SortKey)}>
             {SORT_OPTIONS.map((o) => (
               <DropdownMenu.RadioItem
                 key={o.value}
                 value={o.value}
-                className="relative flex cursor-pointer items-center rounded-lg py-2 pr-3 pl-8 text-[13px] outline-none select-none data-[highlighted]:bg-soft"
+                className="relative flex cursor-pointer items-center rounded-xl py-2.5 pr-3 pl-9 text-[13px] outline-none select-none transition-colors data-[highlighted]:bg-soft"
               >
-                <DropdownMenu.ItemIndicator className="absolute left-2.5 inline-flex">
-                  <Check className="size-4" />
+                <DropdownMenu.ItemIndicator className="absolute left-3 inline-flex">
+                  <Check className="size-3.5" />
                 </DropdownMenu.ItemIndicator>
                 {o.label}
               </DropdownMenu.RadioItem>
