@@ -205,6 +205,34 @@ export const products: Product[] = [
       { label: "Warranty", value: "2 years" },
     ],
   },
+  {
+    slug: "fossil-flynn-chronograph",
+    name: "FOSSIL Flynn Chronograph Smoke Stainless Steel Watch",
+    brand: "FOSSIL",
+    price: 8650,
+    compareAt: 14500,
+    gender: "men",
+    strap: "steel",
+    collection: "fossil",
+    featured: false,
+    newLaunch: true,
+    category: "Chronograph Watches",
+    image: "/product/fossil main.png",
+    gallery: [
+      "/product/fossil main.png",
+      "/product/fossil side.png",
+      "/product/fossil top.png",
+    ],
+    blurb: "Smoke stainless steel chronograph with bold blue dial.",
+    description: "FOSSIL Flynn Chronograph with smoke-tone stainless steel case and bracelet, blue multi-function dial.",
+    specs: [
+      { label: "For", value: "Men" },
+      { label: "Brand", value: "FOSSIL" },
+      { label: "Color", value: "Silver" },
+      { label: "Crystal", value: "Mineral" },
+      { label: "Movement", value: "Quartz chronograph" },
+    ],
+  },
 ];
 
 export const categories = [
