@@ -1,6 +1,6 @@
 export type Gender = "men" | "women" | "unisex";
 export type Strap = "leather" | "steel" | "mesh" | "bracelet";
-export type Collection = "studio" | "atelier";
+export type Collection = "studio" | "atelier" | "fossil";
 
 export type Product = {
   slug: string;
@@ -217,11 +217,11 @@ export const products: Product[] = [
     featured: false,
     newLaunch: true,
     category: "Chronograph Watches",
-    image: "/product/fossil main.png",
+    image: "/products/fossil main.png",
     gallery: [
-      "/product/fossil main.png",
-      "/product/fossil side.png",
-      "/product/fossil top.png",
+      "/products/fossil main.png",
+      "/products/fossil side.png",
+      "/products/fossil top.png",
     ],
     blurb: "Smoke stainless steel chronograph with bold blue dial.",
     description: "FOSSIL Flynn Chronograph with smoke-tone stainless steel case and bracelet, blue multi-function dial.",
