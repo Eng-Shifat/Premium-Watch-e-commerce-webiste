@@ -36,6 +36,21 @@ export function Header() {
     setOpen(false);
   }, [pathname]);
 
+  // While the mobile menu is open: Esc closes it and the page behind it doesn't scroll.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   // On the home page the bar is fully transparent over the hero until you scroll.
   // Everywhere else (dark pages) it is always frosted glass.
   const glass = true;
@@ -47,7 +62,9 @@ export function Header() {
         aria-hidden="true"
         className={cn(
           "pointer-events-none absolute inset-0 -z-10 border-b transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 ease-out",
-          glass
+          open
+            ? "border-line bg-white shadow-none"
+            : glass
             ? cn(
                 "border-white/40 bg-white/90 shadow-[0_1px_24px_rgba(0,0,0,0.06)] supports-[backdrop-filter]:backdrop-blur-xl supports-[backdrop-filter]:backdrop-saturate-150",
                 isHome
@@ -113,21 +130,39 @@ export function Header() {
       </div>
 
       {open ? (
-        <div className="menu-panel absolute inset-x-0 top-full border-t border-white/40 bg-white/90 shadow-[0_18px_40px_rgba(0,0,0,0.08)] supports-[backdrop-filter]:bg-white/65 supports-[backdrop-filter]:backdrop-blur-xl supports-[backdrop-filter]:backdrop-saturate-150 md:hidden">
-          <nav className="site-wrap flex flex-col py-2" aria-label="Mobile">
-            {nav.map((item, i) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="menu-item flex h-12 items-center text-sm text-ink transition-opacity duration-150 active:opacity-60"
-                style={{ animationDelay: `${60 + i * 60}ms` }}
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
+        <>
+          {/* dim the page under the menu; tap to close */}
+          <button
+            type="button"
+            aria-label="Close menu"
+            tabIndex={-1}
+            onClick={() => setOpen(false)}
+            className="absolute inset-x-0 top-full h-svh bg-black/35 md:hidden"
+          />
+          <div className="menu-panel absolute inset-x-0 top-full border-t border-line bg-white shadow-[0_18px_40px_rgba(0,0,0,0.12)] md:hidden">
+            <nav className="site-wrap flex flex-col py-1" aria-label="Mobile">
+              {nav.map((item, i) => {
+                const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "menu-item flex h-[52px] items-center justify-between border-b border-line text-[15px] transition-opacity duration-150 last:border-b-0 active:opacity-60",
+                      active ? "font-semibold text-ink" : "text-ash",
+                    )}
+                    style={{ animationDelay: `${60 + i * 60}ms` }}
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                    {active ? <span className="size-1.5 rounded-full bg-ink" /> : null}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        </>
       ) : null}
     </header>
   );

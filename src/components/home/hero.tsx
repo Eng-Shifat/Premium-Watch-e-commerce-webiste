@@ -5,12 +5,16 @@ import { cn } from "@/lib/utils";
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-hero">
-      <img
-        src="/images/hero/hero1.png"
-        alt=""
-        fetchPriority="high"
-        className="hero-zoom absolute inset-0 w-full h-full object-cover object-[62%_center] sm:object-center"
-      />
+      {/* Below lg the photo fills the hero. From lg up it is shown ~14% smaller (zoomed out), sits on the
+          right and fades softly into the hero colour on its left edge, so no seam is visible. */}
+      <div className="absolute inset-0 flex items-center justify-end">
+        <img
+          src="/images/hero/hero1.png"
+          alt=""
+          fetchPriority="high"
+          className="hero-zoom h-full w-full object-cover object-[62%_center] sm:object-center lg:h-auto lg:min-h-full lg:w-[86%] lg:max-w-none lg:shrink-0 lg:object-right lg:[-webkit-mask-image:linear-gradient(to_right,transparent,#000_18%)] lg:[mask-image:linear-gradient(to_right,transparent,#000_18%)]"
+        />
+      </div>
       {/* mobile: soft fade only behind the text (left), watch on the right stays crisp */}
       <div className="absolute inset-0 bg-linear-to-r from-hero/95 from-30% via-hero/50 via-55% to-transparent to-75% sm:hidden" />
 
